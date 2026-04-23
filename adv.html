@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adv</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+    window.MathJax = {
+      startup: {
+        typeset: false
+      },
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      chtml: {
+        scale: 1.3
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    body {
+      background: #000;
+      color: #ccc;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .nav {
+      padding: 12px;
+      border-bottom: 1px solid #222;
+      background: #000;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search {
+      width: 220px;
+      max-width: 100%;
+      background: #0d0d0d;
+      border: 1px solid #333;
+      color: #ddd;
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .search:focus {
+      border-color: #666;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
+
+    button {
+      background: #111;
+      border: 1px solid #333;
+      color: #ccc;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      font-size: 12px;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #222;
+    }
+
+    button.active {
+      background: #f5f5f5;
+      color: #000;
+      border-color: #f5f5f5;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 30px;
+      position: relative;
+      min-height: 220px;
+    }
+
+    h1 {
+      font-size: 36px;
+      color: #fff;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #222;
+      padding-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 26px;
+      color: #ddd;
+      margin-top: 35px;
+    }
+
+    p,
+    li {
+      color: #aaa;
+    }
+
+    p,
+    ul,
+    ol {
+      margin-top: 1em;
+      margin-bottom: 1em;
+    }
+
+    li {
+      margin: 0.45em 0;
+    }
+
+    .formula {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 18px;
+      margin: 28px 0;
+      font-size: 1.25em;
+      text-align: center;
+      line-height: 1.9;
+      overflow-x: auto;
+      transition: 0.2s;
+    }
+
+    .formula:hover {
+      background: #1a1a1a;
+    }
+
+    .inline-formula {
+      display: inline-block;
+      background: #111;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin: 0 3px;
+      font-size: 1.05em;
+      line-height: 1.5;
+      vertical-align: middle;
+    }
+
+    mjx-container[display="true"] {
+      margin: 1.25em 0 !important;
+    }
+
+    .formula mjx-container[display="true"] {
+      margin: 0.6em 0 !important;
+    }
+
+    .loader {
+      width: 52px;
+      height: 52px;
+      border: 4px solid #242424;
+      border-top-color: #f5f5f5;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 80px auto;
+    }
+
+    .loading-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .search {
+        width: 100%;
+      }
+
+      .container {
+        padding: 20px 16px;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="nav">
+  <input
+    id="chapter-search"
+    class="search"
+    type="search"
+    placeholder="Search chapters..."
+    aria-label="Search chapters"
+  >
+  <button data-file="kinematics.md" onclick="loadChapter('kinematics.md')">Kinematics</button>
+  <button data-file="NLM.md" onclick="loadChapter('NLM.md')">NLM</button>
+  <button data-file="WEP.md" onclick="loadChapter('WEP.md')">Work Energy Power</button>
+  <button data-file="COM.md" onclick="loadChapter('COM.md')">COM, Momentum & Collisions</button>
+  <button data-file="rotation.md" onclick="loadChapter('rotation.md')">Rigid Body Dynamics</button>
+  <button data-file="gravitation.md" onclick="loadChapter('gravitation.md')">Gravitation</button>
+  <button data-file="fluids-and-solids.md" onclick="loadChapter('fluids-and-solids.md')">Fluids and Solids</button>
+  <button data-file="SHM.md" onclick="loadChapter('SHM.md')">SHM</button>
+  <button data-file="waves.md" onclick="loadChapter('waves.md')">Waves</button>
+  <button data-file="calorimetry.md" onclick="loadChapter('calorimetry.md')">Thermal Expansion & Calorimetry</button>
+  <button data-file="heat-transfer.md" onclick="loadChapter('heat-transfer.md')">Heat Transfer</button>
+  <button data-file="KTG.md" onclick="loadChapter('KTG.md')">Kinetic Theory Of Gases</button>
+  <button data-file="thermodynamics.md" onclick="loadChapter('thermodynamics.md')">Thermodynamics</button>
+  <button data-file="complete.md" onclick="loadChapter('complete.md')">Complete</button>
+</div>
+
+<div class="container" id="content"></div>
+
+<script>
+const LAST_CHAPTER_KEY = "jee-formula-last-chapter";
+const DEFAULT_CHAPTER = "kinematics.md";
+
+function fileToHash(file) {
+  return file.replace(/\.md$/i, "").toLowerCase();
+}
+
+function hashToFile(hash) {
+  const normalizedHash = hash.replace(/^#/, "").trim().toLowerCase();
+  if (!normalizedHash) {
+    return null;
+  }
+
+  const button = document.querySelector(`.nav button[data-file="${normalizedHash}.md"]`);
+  return button ? `${normalizedHash}.md` : null;
+}
+
+function extractMath(content) {
+  const mathStore = [];
+
+  function stash(html) {
+    const token = `@@MATH_${mathStore.length}@@`;
+    mathStore.push(html);
+    return token;
+  }
+
+  const withBlockMath = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, eq) => {
+    return stash(`<div class="formula">$$${eq.trim()}$$</div>`);
+  });
+
+  const withInlineMath = withBlockMath.replace(
+    /(?<!\\)\$(?!\$)(.+?)(?<!\\)\$/g,
+    (_, eq) => stash(`<span class="inline-formula">$${eq.trim()}$</span>`)
+  );
+
+  return { content: withInlineMath, mathStore };
+}
+
+function restoreMath(html, mathStore) {
+  return html.replace(/@@MATH_(\d+)@@/g, (_, index) => mathStore[Number(index)]);
+}
+
+function setActiveButton(file) {
+  document.querySelectorAll(".nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.file === file);
+  });
+}
+
+function filterButtons(query) {
+  const normalizedQuery = query.trim().toLowerCase();
+
+  document.querySelectorAll(".nav button").forEach(button => {
+    const label = button.textContent.toLowerCase();
+    const file = button.dataset.file.toLowerCase();
+    const isMatch = !normalizedQuery || label.includes(normalizedQuery) || file.includes(normalizedQuery);
+    button.style.display = isMatch ? "" : "none";
+  });
+}
+
+function showLoader() {
+  document.getElementById("content").innerHTML =
+    '<div class="loading-wrap"><div class="loader" aria-label="Loading" role="status"></div></div>';
+}
+
+async function render(markdown) {
+  const { content: safeMarkdown, mathStore } = extractMath(markdown);
+  const parsedHtml = marked.parse(safeMarkdown);
+  const finalHtml = restoreMath(parsedHtml, mathStore);
+  const container = document.getElementById("content");
+
+  if (window.MathJax && typeof MathJax.typesetClear === "function") {
+    MathJax.typesetClear([container]);
+  }
+
+  container.innerHTML = finalHtml;
+  await MathJax.typesetPromise([container]);
+}
+
+function getInitialChapter() {
+  return (
+    hashToFile(window.location.hash) ||
+    localStorage.getItem(LAST_CHAPTER_KEY) ||
+    DEFAULT_CHAPTER
+  );
+}
+
+function loadChapter(file, options = {}) {
+  const { updateHash = true } = options;
+  setActiveButton(file);
+  showLoader();
+
+  fetch(file)
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      return res.text();
+    })
+    .then(async data => {
+      await render(data);
+      localStorage.setItem(LAST_CHAPTER_KEY, file);
+      if (updateHash) {
+        window.location.hash = fileToHash(file);
+      }
+      window.scrollTo(0, 0);
+    })
+    .catch(err => {
+      document.getElementById("content").innerText = "Failed to load chapter.";
+      console.error(err);
+    });
+}
+
+document.getElementById("chapter-search").addEventListener("input", event => {
+  filterButtons(event.target.value);
+});
+
+window.addEventListener("hashchange", () => {
+  const fileFromHash = hashToFile(window.location.hash);
+  if (fileFromHash) {
+    loadChapter(fileFromHash, { updateHash: false });
+  }
+});
+
+filterButtons("");
+loadChapter(getInitialChapter(), { updateHash: !window.location.hash });
+</script>
+
+</body>
+</html>
