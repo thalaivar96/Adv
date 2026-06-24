@@ -5,813 +5,380 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adv Physics Notes</title>
 
+  <!-- Markdown Parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
+  <!-- MathJax for rendering equations -->
   <script>
     window.MathJax = {
-      startup: {
-        typeset: false
-      },
+      startup: { typeset: false },
       tex: {
         inlineMath: [['$', '$']],
         displayMath: [['$$', '$$']],
         processEscapes: true,
         processEnvironments: true
       },
-      chtml: {
-        scale: 1.3
-      }
+      chtml: { scale: 1.2 }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
+    /* --- Reset & Base Styles --- */
+    * { box-sizing: border-box; }
     body {
+      margin: 0;
+      padding: 0;
       background: #000;
       color: #ccc;
-      font-family: Arial, sans-serif;
-      font-size: 18px;
-      line-height: 1.8;
-      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
       display: flex;
       height: 100vh;
-      overflow: hidden;
+      overflow: hidden; /* Prevent body scroll, use inner scroll areas */
     }
 
-    /* --- Sidebar Menu Styles --- */
-    .sidebar {
+    /* --- Sidebar Menu --- */
+    #sidebar {
       width: 280px;
       min-width: 280px;
-      background: #080808;
+      background: #0a0a0a;
       border-right: 1px solid #222;
       display: flex;
       flex-direction: column;
-      height: 100%;
-      z-index: 100;
-      transition: transform 0.3s ease;
+      z-index: 1000;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .sidebar-header {
       padding: 20px 15px;
-      border-bottom: 1px solid #222;
       background: #000;
+      border-bottom: 1px solid #222;
     }
 
     .sidebar-title {
       color: #fff;
       font-size: 20px;
-      font-weight: bold;
+      font-weight: 600;
       margin: 0 0 15px 0;
       text-align: center;
+      letter-spacing: 1px;
     }
 
-    .search {
+    #search-input {
       width: 100%;
-      box-sizing: border-box;
-      background: #111;
-      border: 1px solid #333;
-      color: #ddd;
       padding: 10px 12px;
+      background: #141414;
+      border: 1px solid #333;
       border-radius: 6px;
+      color: #fff;
       font-size: 14px;
       outline: none;
     }
+    #search-input:focus { border-color: #555; }
 
-    .search:focus {
-      border-color: #666;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
-    }
-
-    .nav-items {
-      padding: 15px;
+    .nav-buttons {
+      flex: 1;
       overflow-y: auto;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      flex: 1;
     }
 
-    .nav-items button {
-      background: #111;
-      border: 1px solid #222;
-      color: #ccc;
+    .nav-btn {
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      color: #bbb;
       padding: 12px 16px;
-      cursor: pointer;
-      border-radius: 6px;
-      font-size: 14px;
       text-align: left;
-      transition: 0.2s;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
       width: 100%;
     }
 
-    .nav-items button:hover {
-      background: #222;
-      border-color: #444;
-    }
-
-    .nav-items button.active {
-      background: #f5f5f5;
+    .nav-btn:hover { background: #222; color: #fff; }
+    .nav-btn.active {
+      background: #fff;
       color: #000;
-      border-color: #f5f5f5;
-      font-weight: bold;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+      border-color: #fff;
+      font-weight: 600;
     }
 
-    /* --- Main Content Area --- */
-    .main-wrapper {
+    /* --- Main Content Layout --- */
+    #main-area {
       flex: 1;
       display: flex;
       flex-direction: column;
-      min-width: 0; /* Prevents flex children from overflowing */
-      height: 100%;
+      min-width: 0; 
     }
 
-    .mobile-header {
+    /* Mobile Top Bar */
+    #mobile-topbar {
       display: none;
-      background: #080808;
-      border-bottom: 1px solid #222;
+      background: #000;
       padding: 12px 20px;
+      border-bottom: 1px solid #222;
       align-items: center;
       gap: 15px;
+      z-index: 900;
     }
 
-    .menu-toggle {
-      background: #111;
-      border: 1px solid #333;
+    .menu-toggle-btn {
+      background: none;
+      border: 1px solid #444;
       color: #fff;
-      padding: 8px 12px;
+      font-size: 20px;
+      padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
-      font-size: 18px;
-    }
-
-    .menu-toggle:hover {
-      background: #222;
-    }
-
-    .mobile-title {
-      color: #fff;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .content-scroll {
-      flex: 1;
-      overflow-y: auto;
-      background: #000;
-      scroll-behavior: smooth;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 30px;
-      position: relative;
-      min-height: 220px;
-    }
-
-    h1 {
-      font-size: 36px;
-      color: #fff;
-      margin-top: 0;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #222;
-      padding-bottom: 10px;
-    }
-
-    h2 {
-      font-size: 26px;
-      color: #ddd;
-      margin-top: 35px;
-    }
-
-    p, li {
-      color: #aaa;
-    }
-
-    p, ul, ol {
-      margin-top: 1em;
-      margin-bottom: 1em;
-    }
-
-    li {
-      margin: 0.45em 0;
-    }
-
-    .formula {
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 18px;
-      margin: 28px 0;
-      font-size: 1.25em;
-      text-align: center;
-      line-height: 1.9;
-      overflow-x: auto;
-      transition: 0.2s;
-    }
-
-    .formula:hover {
-      background: #1a1a1a;
-    }
-
-    .inline-formula {
-      display: inline-block;
-      background: #111;
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin: 0 3px;
-      font-size: 1.05em;
-      line-height: 1.5;
-      vertical-align: middle;
-    }
-
-    mjx-container[display="true"] {
-      margin: 1.25em 0 !important;
-    }
-
-    .formula mjx-container[display="true"] {
-      margin: 0.6em 0 !important;
-    }
-
-    .loader {
-      width: 52px;
-      height: 52px;
-      border: 4px solid #242424;
-      border-top-color: #f5f5f5;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 80px auto;
-    }
-
-    .loading-wrap {
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 180px;
+    }
+    .menu-toggle-btn:active { background: #222; }
+
+    .mobile-page-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    /* Scrollable Content Region */
+    #content-scroll-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px;
+      scroll-behavior: smooth;
     }
+
+    .content-container {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    /* --- Typography & Elements in Content --- */
+    h1 { font-size: 2.2em; color: #fff; border-bottom: 1px solid #222; padding-bottom: 10px; margin-top: 0; }
+    h2 { font-size: 1.6em; color: #eee; margin-top: 1.5em; }
+    h3 { color: #ddd; }
+    p, li { color: #aaa; }
+    a { color: #4da6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .formula {
+      background: #111;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: center;
+      overflow-x: auto;
+    }
+    .inline-formula {
+      background: #111;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
+    
+    mjx-container[display="true"] { margin: 1em 0 !important; }
+    
+    .loader {
+      width: 40px; height: 40px;
+      border: 3px solid #222;
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 60px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* --- Mobile Overlay --- */
-    .overlay {
+    #overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0,0,0,0.6);
-      z-index: 90;
+      backdrop-filter: blur(2px);
+      z-index: 999;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.3s;
     }
 
-    /* --- Responsive Design --- */
+    /* --- Responsive Media Query --- */
     @media (max-width: 850px) {
-      .mobile-header {
-        display: flex;
+      #mobile-topbar { display: flex; }
+      #sidebar {
+        position: fixed;
+        left: 0; top: 0; bottom: 0;
+        transform: translateX(-100%); /* Hidden by default on mobile */
+      }
+      #sidebar.open { transform: translateX(0); /* Slide in */ }
+      #overlay.show { display: block; opacity: 1; }
+      #content-scroll-area { padding: 25px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Overlay for mobile clicking to close -->
+  <div id="overlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">Chapters</h2>
+      <input type="search" id="search-input" placeholder="Search chapters...">
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn" data-file="kinematics.md" onclick="loadChapter('kinematics.md')">Kinematics</button>
+      <button class="nav-btn" data-file="error.md" onclick="loadChapter('error.md')">ERRORS, MEASUREMENTS & INSTRUMENTS</button>
+      <button class="nav-btn" data-file="NLM.md" onclick="loadChapter('NLM.md')">NLM</button>
+      <button class="nav-btn" data-file="WEP.md" onclick="loadChapter('WEP.md')">Work Energy Power</button>
+      <button class="nav-btn" data-file="COM.md" onclick="loadChapter('COM.md')">COM, Momentum & Collisions</button>
+      <button class="nav-btn" data-file="rotation.md" onclick="loadChapter('rotation.md')">Rigid Body Dynamics</button>
+      <button class="nav-btn" data-file="gravitation.md" onclick="loadChapter('gravitation.md')">Gravitation</button>
+      <button class="nav-btn" data-file="fluids-and-solids.md" onclick="loadChapter('fluids-and-solids.md')">Fluids and Solids</button>
+      <button class="nav-btn" data-file="SHM.md" onclick="loadChapter('SHM.md')">SHM</button>
+      <button class="nav-btn" data-file="waves.md" onclick="loadChapter('waves.md')">Waves</button>
+      <button class="nav-btn" data-file="calorimetry.md" onclick="loadChapter('calorimetry.md')">Thermal Expansion & Calorimetry</button>
+      <button class="nav-btn" data-file="heat-transfer.md" onclick="loadChapter('heat-transfer.md')">Heat Transfer</button>
+      <button class="nav-btn" data-file="KTG.md" onclick="loadChapter('KTG.md')">Kinetic Theory Of Gases</button>
+      <button class="nav-btn" data-file="thermodynamics.md" onclick="loadChapter('thermodynamics.md')">Thermodynamics</button>
+      <button class="nav-btn" data-file="complete.md" onclick="loadChapter('complete.md')">Complete</button>
+    </div>
+  </nav>
+
+  <!-- Main Area -->
+  <main id="main-area">
+    <!-- Mobile Top Bar -->
+    <header id="mobile-topbar">
+      <button class="menu-toggle-btn" onclick="openSidebar()" aria-label="Open Menu">☰</button>
+      <h1 class="mobile-page-title">Adv Physics Notes</h1>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div id="content-scroll-area">
+      <div class="content-container" id="content">
+        <!-- Markdown content loads here -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // --- Sidebar Controls ---
+    function openSidebar() {
+      document.getElementById('sidebar').classList.add('open');
+      document.getElementById('overlay').classList.add('show');
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    }
+
+    // --- Search Functionality ---
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const match = btn.textContent.toLowerCase().includes(query);
+        btn.style.display = match ? 'block' : 'none';
+      });
+    });
+
+    // --- Chapter Loading Logic ---
+    const LAST_CHAPTER_KEY = "jee-formula-last-chapter";
+    const DEFAULT_CHAPTER = "kinematics.md";
+
+    function fileToHash(file) {
+      return file.replace(/\.md$/i, "").toLowerCase();
+    }
+
+    function hashToFile(hash) {
+      const normalizedHash = hash.replace(/^#/, "").trim().toLowerCase();
+      if (!normalizedHash) return null;
+      const btn = document.querySelector(`.nav-btn[data-file="${normalizedHash}.md"]`);
+      return btn ? `${normalizedHash}.md` : null;
+    }
+
+    function setActiveButton(file) {
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.file === file);
+      });
+    }
+
+    function extractMath(content) {
+      const mathStore = [];
+      function stash(html) {
+        const token = `@@MATH_${mathStore.length}@@`;
+        mathStore.push(html);
+        return token;
+      }
+      const withBlockMath = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, eq) => {
+        return stash(`<div class="formula">$$${eq.trim()}$$</div>`);
+      });
+      const withInlineMath = withBlockMath.replace(/(?<!\\)\$(?!\$)(.+?)(?<!\\)\$/g, (_, eq) => {
+        return stash(`<span class="inline-formula">$${eq.trim()}$</span>`);
+      });
+      return { content: withInlineMath, mathStore };
+    }
+
+    function restoreMath(html, mathStore) {
+      return html.replace(/@@MATH_(\d+)@@/g, (_, idx) => mathStore[Number(idx)]);
+    }
+
+    async function render(markdown) {
+      const { content: safeMarkdown, mathStore } = extractMath(markdown);
+      const parsedHtml = marked.parse(safeMarkdown);
+      const finalHtml = restoreMath(parsedHtml, mathStore);
+      
+      const container = document.getElementById("content");
+      if (window.MathJax && typeof MathJax.typesetClear === "function") {
+        MathJax.typesetClear([container]);
       }
       
-      .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        transform: translateX(-100%);
-        box-shadow: 2px 0 10px rgba(0,0,0,0.8);
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .overlay.show {
-        display: block;
-        opacity: 1;
-      }
-
-      .container {
-        padding: 25px 20px;
-      }
-
-      h1 { font-size: 30px; }
-      h2 { font-size: 22px; }
+      container.innerHTML = finalHtml;
+      await MathJax.typesetPromise([container]);
     }
-  </style>
-</head>
 
-<body>
+    function showLoader() {
+      document.getElementById("content").innerHTML = '<div class="loader"></div>';
+    }
 
-<!-- Mobile Overlay (click to close menu) -->
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+    function loadChapter(file, updateHash = true) {
+      setActiveButton(file);
+      closeSidebar(); // Auto-close menu on mobile after selection
+      showLoader();
 
-<!-- Sidebar Menu -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-header">
-    <h2 class="sidebar-title">Chapters</h2>
-    <input
-      id="chapter-search"
-      class="search"
-      type="search"
-      placeholder="Search chapters..."
-      aria-label="Search chapters"
-    >
-  </div>
-  <div class="nav-items" id="nav-items">
-    <button data-file="kinematics.md" onclick="loadChapter('kinematics.md')">Kinematics</button>
-    <button data-file="error.md" onclick="loadChapter('error.md')">ERRORS, MEASUREMENTS & INSTRUMENTS</button>
-    <button data-file="NLM.md" onclick="loadChapter('NLM.md')">NLM</button>
-    <button data-file="WEP.md" onclick="loadChapter('WEP.md')">Work Energy Power</button>
-    <button data-file="COM.md" onclick="loadChapter('COM.md')">COM, Momentum & Collisions</button>
-    <button data-file="rotation.md" onclick="loadChapter('rotation.md')">Rigid Body Dynamics</button>
-    <button data-file="gravitation.md" onclick="loadChapter('gravitation.md')">Gravitation</button>
-    <button data-file="fluids-and-solids.md" onclick="loadChapter('fluids-and-solids.md')">Fluids and Solids</button>
-    <button data-file="SHM.md" onclick="loadChapter('SHM.md')">SHM</button>
-    <button data-file="waves.md" onclick="loadChapter('waves.md')">Waves</button>
-    <button data-file="calorimetry.md" onclick="loadChapter('calorimetry.md')">Thermal Expansion & Calorimetry</button>
-    <button data-file="heat-transfer.md" onclick="loadChapter('heat-transfer.md')">Heat Transfer</button>
-    <button data-file="KTG.md" onclick="loadChapter('KTG.md')">Kinetic Theory Of Gases</button>
-    <button data-file="thermodynamics.md" onclick="loadChapter('thermodynamics.md')">Thermodynamics</button>
-    <button data-file="complete.md" onclick="loadChapter('complete.md')">Complete</button>
-  </div>
-</aside>
+      fetch(file)
+        .then(res => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.text();
+        })
+        .then(async data => {
+          await render(data);
+          localStorage.setItem(LAST_CHAPTER_KEY, file);
+          if (updateHash) window.location.hash = fileToHash(file);
+          document.getElementById('content-scroll-area').scrollTo(0, 0); // Scroll to top
+        })
+        .catch(err => {
+          document.getElementById("content").innerHTML = `<p style="color:red; margin-top:20px;">Failed to load <b>${file}</b>. Make sure the markdown file exists in the same folder.</p>`;
+          console.error(err);
+        });
+    }
 
-<!-- Main Content Area -->
-<div class="main-wrapper">
-  <!-- Top bar for Mobile -->
-  <div class="mobile-header">
-    <button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle Menu">☰</button>
-    <div class="mobile-title">Adv Physics Notes</div>
-  </div>
-
-  <div class="content-scroll" id="scroll-area">
-    <div class="container" id="content"></div>
-  </div>
-</div>
-
-<script>
-const LAST_CHAPTER_KEY = "jee-formula-last-chapter";
-const DEFAULT_CHAPTER = "kinematics.md";
-
-// Sidebar Toggle Logic
-function toggleMenu() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('overlay').classList.toggle('show');
-}
-
-function closeMenu() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('overlay').classList.remove('show');
-}
-
-function fileToHash(file) {
-  return file.replace(/\.md$/i, "").toLowerCase();
-}
-
-function hashToFile(hash) {
-  const normalizedHash = hash.replace(/^#/, "").trim().toLowerCase();
-  if (!normalizedHash) {
-    return null;
-  }
-  const button = document.querySelector(`.nav-items button[data-file="${normalizedHash}.md"]`);
-  return button ? `${normalizedHash}.md` : null;
-}
-
-function extractMath(content) {
-  const mathStore = [];
-  function stash(html) {
-    const token = `@@MATH_${mathStore.length}@@`;
-    mathStore.push(html);
-    return token;
-  }
-
-  const withBlockMath = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, eq) => {
-    return stash(`<div class="formula">$$${eq.trim()}$$</div>`);
-  });
-
-  const withInlineMath = withBlockMath.replace(
-    /(?<!\\)\$(?!\$)(.+?)(?<!\\)\$/g,
-    (_, eq) => stash(`<span class="inline-formula">$${eq.trim()}$</span>`)
-  );
-
-  return { content: withInlineMath, mathStore };
-}
-
-function restoreMath(html, mathStore) {
-  return html.replace(/@@MATH_(\d+)@@/g, (_, index) => mathStore[Number(index)]);
-}
-
-function setActiveButton(file) {
-  document.querySelectorAll(".nav-items button").forEach(button => {
-    button.classList.toggle("active", button.dataset.file === file);
-  });
-}
-
-function filterButtons(query) {
-  const normalizedQuery = query.trim().toLowerCase();
-
-  document.querySelectorAll(".nav-items button").forEach(button => {
-    const label = button.textContent.toLowerCase();
-    const file = button.dataset.file.toLowerCase();
-    const isMatch = !normalizedQuery || label.includes(normalizedQuery) || file.includes(normalizedQuery);
-    button.style.display = isMatch ? "" : "none";
-  });
-}
-
-function showLoader() {
-  document.getElementById("content").innerHTML =
-    '<div class="loading-wrap"><div class="loader" aria-label="Loading" role="status"></div></div>';
-}
-
-async function render(markdown) {
-  const { content: safeMarkdown, mathStore } = extractMath(markdown);
-  const parsedHtml = marked.parse(safeMarkdown);
-  const finalHtml = restoreMath(parsedHtml, mathStore);
-  const container = document.getElementById("content");
-
-  if (window.MathJax && typeof MathJax.typesetClear === "function") {
-    MathJax.typesetClear([container]);
-  }
-
-  container.innerHTML = finalHtml;
-  await MathJax.typesetPromise([container]);
-}
-
-function getInitialChapter() {
-  return (
-    hashToFile(window.location.hash) ||
-    localStorage.getItem(LAST_CHAPTER_KEY) ||
-    DEFAULT_CHAPTER
-  );
-}
-
-function loadChapter(file, options = {}) {
-  const { updateHash = true } = options;
-  setActiveButton(file);
-  closeMenu(); // Close mobile sidebar automatically after picking a chapter
-  showLoader();
-
-  fetch(file)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-      return res.text();
-    })
-    .then(async data => {
-      await render(data);
-      localStorage.setItem(LAST_CHAPTER_KEY, file);
-      if (updateHash) {
-        window.location.hash = fileToHash(file);
-      }
-      document.getElementById('scroll-area').scrollTo(0, 0); // Reset scroll to top
-    })
-    .catch(err => {
-      document.getElementById("content").innerText = "Failed to load chapter.";
-      console.error(err);
+    // --- Initialization ---
+    window.addEventListener("hashchange", () => {
+      const fileFromHash = hashToFile(window.location.hash);
+      if (fileFromHash) loadChapter(fileFromHash, false);
     });
-}
 
-document.getElementById("chapter-search").addEventListener("input", event => {
-  filterButtons(event.target.value);
-});
-
-window.addEventListener("hashchange", () => {
-  const fileFromHash = hashToFile(window.location.hash);
-  if (fileFromHash) {
-    loadChapter(fileFromHash, { updateHash: false });
-  }
-});
-
-filterButtons("");
-loadChapter(getInitialChapter(), { updateHash: !window.location.hash });
-</script>
-
+    const initialChapter = hashToFile(window.location.hash) || localStorage.getItem(LAST_CHAPTER_KEY) || DEFAULT_CHAPTER;
+    loadChapter(initialChapter, !window.location.hash);
+  </script>
 </body>
-  </html>
-    .nav {
-      padding: 12px;
-      border-bottom: 1px solid #222;
-      background: #000;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .search {
-      width: 220px;
-      max-width: 100%;
-      background: #0d0d0d;
-      border: 1px solid #333;
-      color: #ddd;
-      padding: 10px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      outline: none;
-    }
-
-    .search:focus {
-      border-color: #666;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
-    }
-
-    button {
-      background: #111;
-      border: 1px solid #333;
-      color: #ccc;
-      padding: 10px 16px;
-      cursor: pointer;
-      border-radius: 6px;
-      font-size: 12px;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      background: #222;
-    }
-
-    button.active {
-      background: #f5f5f5;
-      color: #000;
-      border-color: #f5f5f5;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 30px;
-      position: relative;
-      min-height: 220px;
-    }
-
-    h1 {
-      font-size: 36px;
-      color: #fff;
-      margin-bottom: 20px;
-      border-bottom: 1px solid #222;
-      padding-bottom: 10px;
-    }
-
-    h2 {
-      font-size: 26px;
-      color: #ddd;
-      margin-top: 35px;
-    }
-
-    p,
-    li {
-      color: #aaa;
-    }
-
-    p,
-    ul,
-    ol {
-      margin-top: 1em;
-      margin-bottom: 1em;
-    }
-
-    li {
-      margin: 0.45em 0;
-    }
-
-    .formula {
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 18px;
-      margin: 28px 0;
-      font-size: 1.25em;
-      text-align: center;
-      line-height: 1.9;
-      overflow-x: auto;
-      transition: 0.2s;
-    }
-
-    .formula:hover {
-      background: #1a1a1a;
-    }
-
-    .inline-formula {
-      display: inline-block;
-      background: #111;
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin: 0 3px;
-      font-size: 1.05em;
-      line-height: 1.5;
-      vertical-align: middle;
-    }
-
-    mjx-container[display="true"] {
-      margin: 1.25em 0 !important;
-    }
-
-    .formula mjx-container[display="true"] {
-      margin: 0.6em 0 !important;
-    }
-
-    .loader {
-      width: 52px;
-      height: 52px;
-      border: 4px solid #242424;
-      border-top-color: #f5f5f5;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 80px auto;
-    }
-
-    .loading-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 180px;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    @media (max-width: 700px) {
-      .search {
-        width: 100%;
-      }
-
-      .container {
-        padding: 20px 16px;
-      }
-
-      h1 {
-        font-size: 30px;
-      }
-
-      h2 {
-        font-size: 22px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="nav">
-  <input
-    id="chapter-search"
-    class="search"
-    type="search"
-    placeholder="Search chapters..."
-    aria-label="Search chapters"
-  >
-  <button data-file="kinematics.md" onclick="loadChapter('kinematics.md')">Kinematics</button>
-  <button data-file="error.md" onclick="loadChapter('error.md')">ERRORS, MEASUREMENTS & INSTRUMENTS</button>
-  <button data-file="NLM.md" onclick="loadChapter('NLM.md')">NLM</button>
-  <button data-file="WEP.md" onclick="loadChapter('WEP.md')">Work Energy Power</button>
-  <button data-file="COM.md" onclick="loadChapter('COM.md')">COM, Momentum & Collisions</button>
-  <button data-file="rotation.md" onclick="loadChapter('rotation.md')">Rigid Body Dynamics</button>
-  <button data-file="gravitation.md" onclick="loadChapter('gravitation.md')">Gravitation</button>
-  <button data-file="fluids-and-solids.md" onclick="loadChapter('fluids-and-solids.md')">Fluids and Solids</button>
-  <button data-file="SHM.md" onclick="loadChapter('SHM.md')">SHM</button>
-  <button data-file="waves.md" onclick="loadChapter('waves.md')">Waves</button>
-  <button data-file="calorimetry.md" onclick="loadChapter('calorimetry.md')">Thermal Expansion & Calorimetry</button>
-  <button data-file="heat-transfer.md" onclick="loadChapter('heat-transfer.md')">Heat Transfer</button>
-  <button data-file="KTG.md" onclick="loadChapter('KTG.md')">Kinetic Theory Of Gases</button>
-  <button data-file="thermodynamics.md" onclick="loadChapter('thermodynamics.md')">Thermodynamics</button>
-  <button data-file="complete.md" onclick="loadChapter('complete.md')">Complete</button>
-</div>
-
-<div class="container" id="content"></div>
-
-<script>
-const LAST_CHAPTER_KEY = "jee-formula-last-chapter";
-const DEFAULT_CHAPTER = "kinematics.md";
-
-function fileToHash(file) {
-  return file.replace(/\.md$/i, "").toLowerCase();
-}
-
-function hashToFile(hash) {
-  const normalizedHash = hash.replace(/^#/, "").trim().toLowerCase();
-  if (!normalizedHash) {
-    return null;
-  }
-
-  const button = document.querySelector(`.nav button[data-file="${normalizedHash}.md"]`);
-  return button ? `${normalizedHash}.md` : null;
-}
-
-function extractMath(content) {
-  const mathStore = [];
-
-  function stash(html) {
-    const token = `@@MATH_${mathStore.length}@@`;
-    mathStore.push(html);
-    return token;
-  }
-
-  const withBlockMath = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, eq) => {
-    return stash(`<div class="formula">$$${eq.trim()}$$</div>`);
-  });
-
-  const withInlineMath = withBlockMath.replace(
-    /(?<!\\)\$(?!\$)(.+?)(?<!\\)\$/g,
-    (_, eq) => stash(`<span class="inline-formula">$${eq.trim()}$</span>`)
-  );
-
-  return { content: withInlineMath, mathStore };
-}
-
-function restoreMath(html, mathStore) {
-  return html.replace(/@@MATH_(\d+)@@/g, (_, index) => mathStore[Number(index)]);
-}
-
-function setActiveButton(file) {
-  document.querySelectorAll(".nav button").forEach(button => {
-    button.classList.toggle("active", button.dataset.file === file);
-  });
-}
-
-function filterButtons(query) {
-  const normalizedQuery = query.trim().toLowerCase();
-
-  document.querySelectorAll(".nav button").forEach(button => {
-    const label = button.textContent.toLowerCase();
-    const file = button.dataset.file.toLowerCase();
-    const isMatch = !normalizedQuery || label.includes(normalizedQuery) || file.includes(normalizedQuery);
-    button.style.display = isMatch ? "" : "none";
-  });
-}
-
-function showLoader() {
-  document.getElementById("content").innerHTML =
-    '<div class="loading-wrap"><div class="loader" aria-label="Loading" role="status"></div></div>';
-}
-
-async function render(markdown) {
-  const { content: safeMarkdown, mathStore } = extractMath(markdown);
-  const parsedHtml = marked.parse(safeMarkdown);
-  const finalHtml = restoreMath(parsedHtml, mathStore);
-  const container = document.getElementById("content");
-
-  if (window.MathJax && typeof MathJax.typesetClear === "function") {
-    MathJax.typesetClear([container]);
-  }
-
-  container.innerHTML = finalHtml;
-  await MathJax.typesetPromise([container]);
-}
-
-function getInitialChapter() {
-  return (
-    hashToFile(window.location.hash) ||
-    localStorage.getItem(LAST_CHAPTER_KEY) ||
-    DEFAULT_CHAPTER
-  );
-}
-
-function loadChapter(file, options = {}) {
-  const { updateHash = true } = options;
-  setActiveButton(file);
-  showLoader();
-
-  fetch(file)
-    .then(res => {
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-      return res.text();
-    })
-    .then(async data => {
-      await render(data);
-      localStorage.setItem(LAST_CHAPTER_KEY, file);
-      if (updateHash) {
-        window.location.hash = fileToHash(file);
-      }
-      window.scrollTo(0, 0);
-    })
-    .catch(err => {
-      document.getElementById("content").innerText = "Failed to load chapter.";
-      console.error(err);
-    });
-}
-
-document.getElementById("chapter-search").addEventListener("input", event => {
-  filterButtons(event.target.value);
-});
-
-window.addEventListener("hashchange", () => {
-  const fileFromHash = hashToFile(window.location.hash);
-  if (fileFromHash) {
-    loadChapter(fileFromHash, { updateHash: false });
-  }
-});
-
-filterButtons("");
-loadChapter(getInitialChapter(), { updateHash: !window.location.hash });
-</script>
-
-</body>
-</html>
+        </html>
