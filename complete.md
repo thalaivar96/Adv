@@ -563,3 +563,661 @@ $$\beta_{refrig} = \frac{T_L}{T_H - T_L}$$
 
 **Differential Change in Entropy**
 $$dS = \frac{dQ_{rev}}{T}$$
+
+## CHAPTER 14: ERRORS AND INSTRUMENTS
+
+**Maximum Permissible Error (Log Method)**
+$$\left(\frac{\Delta Z}{Z}\right)_{max} = |x|\frac{\Delta A}{A} + |y|\frac{\Delta B}{B} + |z|\frac{\Delta C}{C}$$
+
+**Least Count of Vernier Calipers**
+$$\text{LC} = \left(1 - \frac{m}{n}\right) \text{MSD}$$
+
+**Total Reading of Vernier Calipers**
+$$\text{TR} = \text{MSR} + (\text{VSR} \times \text{LC})$$
+
+**Positive Zero Error (Vernier Calipers)**
+$$\text{ZE} = +(v \times \text{LC})$$
+
+**Negative Zero Error (Vernier Calipers)**
+$$\text{ZE} = -((n - v) \times \text{LC})$$
+
+**Pitch of Screw Gauge**
+$$p = \frac{\text{Distance moved on linear scale}}{\text{Number of full rotations}}$$
+
+**Least Count of Screw Gauge**
+$$\text{LC} = \frac{\text{Pitch}}{\text{Total divisions on Circular Scale}}$$
+
+**Total Reading of Screw Gauge**
+$$\text{TR} = \text{LSR} + (\text{CSR} \times \text{LC})$$
+
+**Negative Zero Error (Screw Gauge)**
+$$\text{ZE} = -((N - c) \times \text{LC})$$
+
+## CHAPTER 15: ELECTROSTATICS
+
+**Coulomb's Law (Vector Form)**
+$$\vec{F}_{12} = \frac{1}{4\pi\epsilon_0} \frac{q_1 q_2}{r^2} \hat{r}$$
+
+**Force in a Dielectric Medium**
+$$\vec{F}_{medium} = \frac{\vec{F}_{vacuum}}{K}$$
+
+**Electric Field of a Point Charge**
+$$\vec{E} = \frac{1}{4\pi\epsilon_0} \frac{Q}{r^2} \hat{r}$$
+
+**Perpendicular Electric Field of Finite Line Charge**
+$$E_\perp = \frac{k\lambda}{d} (\sin\theta_1 + \sin\theta_2)$$
+
+**Parallel Electric Field of Finite Line Charge**
+$$E_\parallel = \frac{k\lambda}{d} (\cos\theta_2 - \cos\theta_1)$$
+
+**Electric Field of an Infinite Straight Wire**
+$$E_{infinite} = \frac{\lambda}{2\pi\epsilon_0 d}$$
+
+**Electric Field on Axis of Uniform Ring**
+$$E_{axis} = \frac{kQx}{(R^2 + x^2)^{3/2}}$$
+
+**Maximum Electric Field on Axis of Ring**
+$$E_{max} = \frac{2kQ}{3\sqrt{3}R^2} \quad \text{at } x = \frac{R}{\sqrt{2}}$$
+
+**Electric Field on Axis of Uniform Disc**
+$$E = \frac{\sigma}{2\epsilon_0} \left( 1 - \frac{x}{\sqrt{R^2 + x^2}} \right)$$
+
+**Electric Field of an Infinite Plane Sheet**
+$$E = \frac{\sigma}{2\epsilon_0}$$
+
+**Electric Field Inside a Uniform Solid Sphere**
+$$E_{in} = \frac{\rho r}{3\epsilon_0} = \frac{kQr}{R^3}$$
+
+**Electric Field Inside a Spherical Cavity**
+$$\vec{E}_{cavity} = \frac{\rho \vec{a}}{3\epsilon_0}$$
+
+**Gauss's Law**
+$$\oint \vec{E} \cdot d\vec{A} = \frac{q_{enc}}{\epsilon_0}$$
+
+**Solid Angle of a Cone**
+$$\Omega = 2\pi(1 - \cos\theta)$$
+
+**Electric Flux Through a Cone**
+$$\Phi = \frac{q}{2\epsilon_0} (1 - \cos\theta)$$
+
+**Electric Field-Potential Gradient Relation**
+$$\vec{E} = -\nabla V = -\left( \frac{\partial V}{\partial x}\hat{i} + \frac{\partial V}{\partial y}\hat{j} + \frac{\partial V}{\partial z}\hat{k} \right)$$
+
+**Electric Potential Inside a Uniform Solid Sphere**
+$$V_{in} = \frac{kQ}{2R^3} (3R^2 - r^2)$$
+
+**Electrostatic Potential Energy of Point Charge System**
+$$U = \sum_{\text{all pairs}} \frac{k q_i q_j}{r_{ij}}$$
+
+**Energy Density of an Electric Field**
+$$u = \frac{1}{2} \epsilon_0 E^2$$
+
+**Self-Energy of a Spherical Shell**
+$$U_{self, shell} = \frac{kQ^2}{2R}$$
+
+**Self-Energy of a Uniform Solid Sphere**
+$$U_{self, solid} = \frac{3kQ^2}{5R}$$
+
+**Electric Dipole Moment**
+$$\vec{p} = q(2\vec{a})$$
+
+**Axial Field of an Electric Dipole**
+$$\vec{E}_{axis} = \frac{2k\vec{p}}{r^3}$$
+
+**Equatorial Field of an Electric Dipole**
+$$\vec{E}_{equatorial} = -\frac{k\vec{p}}{r^3}$$
+
+**General Field Magnitude of an Electric Dipole**
+$$E_{net} = \frac{kp}{r^3} \sqrt{1 + 3\cos^2\theta}$$
+
+**Torque on an Electric Dipole**
+$$\vec{\tau} = \vec{p} \times \vec{E}$$
+
+**Potential Energy of an Electric Dipole**
+$$U = -\vec{p} \cdot \vec{E}$$
+
+**Force on a Dipole in a 1D Non-Uniform Field**
+$$F = p \frac{\partial E}{\partial r}$$
+
+**Electrostatic Pressure on Conductor Surface**
+$$P = \frac{\sigma^2}{2\epsilon_0}$$
+
+## CHAPTER 16: CAPACITORS AND DIELECTRICS
+
+**Capacitance Definition**
+$$C = \frac{Q}{V}$$
+
+**Capacitance of Isolated Spherical Conductor**
+$$C = 4\pi\epsilon_0 R$$
+
+**Capacitance of Parallel Plate Capacitor**
+$$C = \frac{\epsilon_0 A}{d}$$
+
+**Capacitance of Spherical Capacitor (Outer Earthed)**
+$$C = \frac{4\pi\epsilon_0 ab}{b - a}$$
+
+**Capacitance of Spherical Capacitor (Inner Earthed)**
+$$C = \frac{4\pi\epsilon_0 b^2}{b - a}$$
+
+**Capacitance of Cylindrical Capacitor**
+$$C = \frac{2\pi\epsilon_0 L}{\ln(b/a)}$$
+
+**Energy Stored in a Capacitor**
+$$U = \frac{1}{2} C V^2 = \frac{Q^2}{2C} = \frac{1}{2} Q V$$
+
+**Attractive Force Between Capacitor Plates**
+$$F = \frac{Q^2}{2A\epsilon_0}$$
+
+**Capacitance with Partially Filled Dielectric Slab**
+$$C = \frac{\epsilon_0 A}{d - t + \frac{t}{K}}$$
+
+**Force on a Dielectric Slab (Constant Voltage)**
+$$F_e = \frac{\epsilon_0 b V^2 (K-1)}{2d}$$
+
+**Force on a Dielectric Slab (Constant Charge)**
+$$F_e = \frac{Q^2 d (K-1)}{2\epsilon_0 b [l + x(K-1)]^2}$$
+
+**Equivalent Capacitance (Series)**
+$$\frac{1}{C_{eq}} = \sum \frac{1}{C_i}$$
+
+**Equivalent Capacitance (Parallel)**
+$$C_{eq} = \sum C_i$$
+
+**Common Potential After Connection**
+$$V_{common} = \frac{C_1 V_1 \pm C_2 V_2}{C_1 + C_2}$$
+
+**Heat Loss in Redistribution of Charge**
+$$\Delta H = \frac{1}{2} \frac{C_1 C_2}{C_1 + C_2} (V_1 \mp V_2)^2$$
+
+**Charging Equation of an RC Circuit**
+$$q(t) = Q_{max} (1 - e^{-t/\tau})$$
+
+**Discharging Equation of an RC Circuit**
+$$q(t) = Q_0 e^{-t/\tau}$$
+
+**Capacitive Time Constant**
+$$\tau = R_{eq} C_{eq}$$
+
+## CHAPTER 17: CURRENT ELECTRICITY
+
+**Electric Current**
+$$I = \frac{dq}{dt} = \int \vec{J} \cdot d\vec{A}$$
+
+**Current Density**
+$$\vec{J} = n e \vec{v}_d$$
+
+**Drift Velocity**
+$$\vec{v}_d = -\frac{e \vec{E}}{m} \tau$$
+
+**Microscopic Ohm's Law**
+$$\vec{J} = \sigma \vec{E} = \frac{1}{\rho} \vec{E}$$
+
+**Resistivity in Terms of Microscopic Quantities**
+$$\rho = \frac{m}{n e^2 \tau}$$
+
+**Resistance**
+$$R = \rho \frac{L}{A}$$
+
+**Temperature Dependence of Resistance**
+$$R(T) = R_0 [1 + \alpha (T - T_0)]$$
+
+**Terminal Voltage (Discharging Cell)**
+$$V = E - Ir$$
+
+**Terminal Voltage (Charging Cell)**
+$$V = E + Ir$$
+
+**Equivalent EMF (Parallel Combination)**
+$$E_{eq} = \frac{\sum \frac{E_i}{r_i}}{\sum \frac{1}{r_i}}$$
+
+**Equivalent Internal Resistance (Parallel Combination)**
+$$\frac{1}{r_{eq}} = \sum \frac{1}{r_i}$$
+
+**Maximum Power Transfer Condition**
+$$R = r$$
+
+**Maximum Power Value**
+$$P_{max} = \frac{E^2}{4r}$$
+
+**Galvanometer Deflection Torque**
+$$\tau = N I A B = C \theta$$
+
+**Shunt Resistor for Ammeter Conversion**
+$$S = \frac{I_g R_g}{I - I_g}$$
+
+**Series Resistor for Voltmeter Conversion**
+$$R = \frac{V}{I_g} - R_g$$
+
+**Balanced Wheatstone Bridge**
+$$\frac{R_1}{R_2} = \frac{R_3}{R_4}$$
+
+**Meter Bridge Formula**
+$$X = R \left( \frac{l}{100 - l} \right)$$
+
+**Potential Gradient of Potentiometer**
+$$k = \left( \frac{E_0}{R_0 + r_0 + R_h} \right) \frac{R_0}{L}$$
+
+**Internal Resistance via Potentiometer**
+$$r = R \left( \frac{l_1 - l_2}{l_2} \right)$$
+
+## CHAPTER 18: MOVING CHARGES AND MAGNETISM
+
+**Biot-Savart Law (Vector Form)**
+$$d\vec{B} = \frac{\mu_0}{4\pi} \frac{I (d\vec{l} \times \vec{r})}{r^3}$$
+
+**Magnetic Field of Finite Straight Wire**
+$$B = \frac{\mu_0 I}{4\pi d} (\sin\phi_1 + \sin\phi_2)$$
+
+**Magnetic Field of Infinite Straight Wire**
+$$B = \frac{\mu_0 I}{2\pi d}$$
+
+**Magnetic Field at Center of Circular Arc**
+$$B_{center} = \frac{\mu_0 I \theta}{4\pi R}$$
+
+**Magnetic Field on Axis of Circular Loop**
+$$B_{axis} = \frac{\mu_0 N I R^2}{2 (R^2 + x^2)^{3/2}}$$
+
+**Magnetic Field Inside Infinite Solenoid**
+$$B = \mu_0 n I$$
+
+**Magnetic Field Inside Toroid**
+$$B = \frac{\mu_0 N I}{2\pi R}$$
+
+**Ampere's Circuital Law**
+$$\oint \vec{B} \cdot d\vec{l} = \mu_0 I_{enclosed}$$
+
+**Magnetic Field Inside Solid Wire ($r \le R$)**
+$$B = \frac{\mu_0 I r}{2\pi R^2}$$
+
+**Magnetic Lorentz Force**
+$$\vec{F}_m = q (\vec{v} \times \vec{B})$$
+
+**Radius of Circular Path in Magnetic Field**
+$$r = \frac{mv}{qB} = \frac{\sqrt{2mK}}{qB}$$
+
+**Time Period of Circular Path in Magnetic Field**
+$$T = \frac{2\pi m}{qB}$$
+
+**Radius of Helical Path**
+$$r = \frac{m v \sin\theta}{qB}$$
+
+**Pitch of Helical Path**
+$$p = (v \cos\theta) \left( \frac{2\pi m}{qB} \right)$$
+
+**Cyclotron Resonance Frequency**
+$$f = \frac{qB}{2\pi m}$$
+
+**Magnetic Force on a Straight Wire**
+$$\vec{F} = I (\vec{L} \times \vec{B})$$
+
+**Force Per Unit Length Between Parallel Wires**
+$$f = \frac{\mu_0 I_1 I_2}{2\pi d}$$
+
+**Magnetic Dipole Moment of Loop**
+$$\vec{M} = N I \vec{A}$$
+
+**Magnetic Dipole Moment of Revolving Electron**
+$$M = \frac{e v r}{2} = \frac{e}{2 m_e} L$$
+
+**Torque on Magnetic Dipole**
+$$\vec{\tau} = \vec{M} \times \vec{B}$$
+
+**Potential Energy of Magnetic Dipole**
+$$U = -\vec{M} \cdot \vec{B}$$
+
+## CHAPTER 19: MAGNETISM AND MATTER
+
+**Magnetic Dipole Moment of Bar Magnet**
+$$\vec{M} = m (2\vec{l})$$
+
+**Axial Field of Short Bar Magnet**
+$$B_{axial} = \frac{\mu_0}{4\pi} \frac{2M}{r^3}$$
+
+**Equatorial Field of Short Bar Magnet**
+$$B_{eq} = \frac{\mu_0}{4\pi} \frac{M}{r^3}$$
+
+**General Field Magnitude of Short Bar Magnet**
+$$B_{net} = \frac{\mu_0 M}{4\pi r^3} \sqrt{1 + 3\cos^2\theta}$$
+
+**Time Period of Vibration Magnetometer**
+$$T = 2\pi \sqrt{\frac{I}{M B_H}}$$
+
+**Horizontal Component of Earth's Field**
+$$B_H = B_E \cos I$$
+
+**Vertical Component of Earth's Field**
+$$B_V = B_E \sin I$$
+
+**True Dip Formula**
+$$\tan I = \frac{B_V}{B_H}$$
+
+**Apparent Dip Formula**
+$$\tan I' = \frac{\tan I}{\cos\alpha}$$
+
+**Two Perpendicular Planes Dip Formula**
+$$\cot^2 I = \cot^2 I_1' + \cot^2 I_2'$$
+
+**Intensity of Magnetization**
+$$\vec{I} = \frac{\vec{M}_{net}}{V}$$
+
+**Magnetic Intensity / Field**
+$$\vec{H} = \frac{\vec{B}_0}{\mu_0}$$
+
+**Total Magnetic Field in Medium**
+$$\vec{B} = \mu_0 (\vec{H} + \vec{I})$$
+
+**Magnetic Susceptibility**
+$$\chi_m = \frac{I}{H}$$
+
+**Relative Permeability Relation**
+$$\mu_r = 1 + \chi_m$$
+
+**Curie's Law (Paramagnetism)**
+$$\chi_m = \frac{C}{T}$$
+
+**Curie-Weiss Law (Ferromagnetism)**
+$$\chi_m = \frac{C}{T - T_C}$$
+
+**Hysteresis Energy Loss Per Unit Volume**
+$$u_{loss} = \oint B \, dH$$
+
+## CHAPTER 20: ELECTROMAGNETIC INDUCTION
+
+**Magnetic Flux**
+$$\Phi_B = \int \vec{B} \cdot d\vec{A}$$
+
+**Faraday's Law of EMI**
+$$\mathcal{E} = -\frac{d\Phi_B}{dt}$$
+
+**Induced Current**
+$$I_{ind} = \frac{1}{R} \left| \frac{d\Phi_B}{dt} \right|$$
+
+**Induced Charge (Independent of Time)**
+$$\Delta q = \frac{|\Delta \Phi_B|}{R}$$
+
+**Translational Motional EMF**
+$$\mathcal{E} = (\vec{v} \times \vec{B}) \cdot \vec{L}$$
+
+**Rotational Motional EMF of Rod**
+$$\mathcal{E} = \frac{1}{2} B \omega L^2$$
+
+**Faraday's Disc Generator EMF**
+$$\mathcal{E} = \frac{1}{2} B \omega R^2$$
+
+**Peak EMF of AC Generator**
+$$\mathcal{E}_0 = N B A \omega$$
+
+**Maxwell-Faraday Equation (Induced Electric Field)**
+$$\oint \vec{E}_{ind} \cdot d\vec{l} = -\frac{\partial \Phi_B}{\partial t}$$
+
+**Induced Electric Field Inside Cylindrical Region ($r \le R$)**
+$$E_{ind} = \frac{r}{2} \left|\frac{dB}{dt}\right|$$
+
+**Induced Electric Field Outside Cylindrical Region ($r \ge R$)**
+$$E_{ind} = \frac{R^2}{2r} \left|\frac{dB}{dt}\right|$$
+
+**Self-Induced EMF**
+$$\mathcal{E} = -L \frac{dI}{dt}$$
+
+**Self-Inductance of Solenoid**
+$$L = \mu_0 n^2 A l = \mu_0 \frac{N^2 A}{l}$$
+
+**Mutual-Induced EMF**
+$$\mathcal{E}_2 = -M \frac{dI_1}{dt}$$
+
+**Mutual Inductance of Co-axial Solenoids**
+$$M = \mu_0 n_1 n_2 (\pi r_1^2) l$$
+
+**Coefficient of Coupling**
+$$M = K \sqrt{L_1 L_2}$$
+
+**Series Combination of Inductors with Mutual Coupling**
+$$L_{eq} = L_1 + L_2 \pm 2M$$
+
+**Energy Stored in an Inductor**
+$$U_B = \frac{1}{2} L I^2$$
+
+**Magnetic Energy Density**
+$$u_B = \frac{B^2}{2\mu_0}$$
+
+**Current Growth in LR Circuit**
+$$I(t) = I_0 \left( 1 - e^{-t/\tau_L} \right)$$
+
+**Current Decay in LR Circuit**
+$$I(t) = I_0 e^{-t/\tau_L}$$
+
+**Inductive Time Constant**
+$$\tau_L = \frac{L}{R}$$
+
+**Differential Equation of LC Oscillations**
+$$\frac{d^2q}{dt^2} + \omega_0^2 q = 0$$
+
+**Resonant Angular Frequency of LC Circuit**
+$$\omega_0 = \frac{1}{\sqrt{LC}}$$
+
+## CHAPTER 21: ALTERNATING CURRENT
+
+**Average Current over Half Cycle**
+$$\langle I \rangle_{half} = \frac{2 I_0}{\pi}$$
+
+**RMS Current (Sinusoidal)**
+$$I_{rms} = \frac{I_0}{\sqrt{2}}$$
+
+**RMS Current (Composite Wave $I = I_{dc} + I_0 \sin\omega t$)**
+$$I_{rms} = \sqrt{I_{dc}^2 + \frac{I_0^2}{2}}$$
+
+**Inductive Reactance**
+$$X_L = \omega L = 2\pi f L$$
+
+**Capacitive Reactance**
+$$X_C = \frac{1}{\omega C} = \frac{1}{2\pi f C}$$
+
+**Series LCR Impedance**
+$$Z = \sqrt{R^2 + (X_L - X_C)^2}$$
+
+**Phase Angle in Series LCR Circuit**
+$$\tan\phi = \frac{X_L - X_C}{R}$$
+
+**Resonant Frequency of Series LCR**
+$$\omega_0 = \frac{1}{\sqrt{LC}}$$
+
+**Quality Factor ($Q$-Factor)**
+$$Q = \frac{\omega_0 L}{R} = \frac{1}{\omega_0 C R} = \frac{1}{R} \sqrt{\frac{L}{C}}$$
+
+**Bandwidth of LCR Circuit**
+$$\Delta \omega = \frac{R}{L}$$
+
+**Average Power in AC Circuit**
+$$P_{avg} = V_{rms} I_{rms} \cos\phi$$
+
+**Power Factor**
+$$\cos\phi = \frac{R}{Z}$$
+
+**Wattless Current**
+$$I_{wattless} = I_{rms} \sin\phi$$
+
+**Transformer Turns Ratio**
+$$\frac{V_s}{V_p} = \frac{N_s}{N_p} = \frac{I_p}{I_s}$$
+
+**Transformer Efficiency**
+$$\eta = \frac{V_s I_s \cos\phi_s}{V_p I_p \cos\phi_p} \times 100\%$$
+
+## CHAPTER 22: ELECTROMAGNETIC WAVES
+
+**Displacement Current**
+$$I_d = \epsilon_0 \frac{d\Phi_E}{dt}$$
+
+**Ampere-Maxwell Law**
+$$\oint \vec{B} \cdot d\vec{l} = \mu_0 I_c + \mu_0 \epsilon_0 \frac{d\Phi_E}{dt}$$
+
+**Speed of Light in Vacuum**
+$$c = \frac{1}{\sqrt{\mu_0 \epsilon_0}} = \frac{E_0}{B_0}$$
+
+**Speed of EM Wave in Medium**
+$$v = \frac{1}{\sqrt{\mu \epsilon}} = \frac{c}{\sqrt{\mu_r \epsilon_r}}$$
+
+**Average Electric Energy Density**
+$$\langle u_E \rangle = \frac{1}{4} \epsilon_0 E_0^2$$
+
+**Average Magnetic Energy Density**
+$$\langle u_B \rangle = \frac{B_0^2}{4\mu_0}$$
+
+**Total Average Energy Density**
+$$\langle u \rangle = \frac{1}{2} \epsilon_0 E_0^2 = \epsilon_0 E_{rms}^2$$
+
+**Poynting Vector**
+$$\vec{S} = \frac{1}{\mu_0} (\vec{E} \times \vec{B})$$
+
+**EM Wave Intensity**
+$$I = \langle S \rangle = \frac{1}{2} \epsilon_0 E_0^2 c$$
+
+**Radiation Pressure (Normal, Perfectly Absorbing)**
+$$P_{rad} = \frac{I}{c}$$
+
+**Radiation Pressure (Normal, Perfectly Reflecting)**
+$$P_{rad} = \frac{2I}{c}$$
+
+**Radiation Pressure (Oblique, Perfectly Absorbing)**
+$$P_{rad} = \frac{I \cos^2\theta}{c}$$
+
+**Radiation Pressure (Oblique, Perfectly Reflecting)**
+$$P_{rad} = \frac{2I \cos^2\theta}{c}$$
+
+## CHAPTER 23: RAY OPTICS AND OPTICAL INSTRUMENTS
+
+**Vector Form of Reflection**
+$$\hat{r} = \hat{i} - 2(\hat{i} \cdot \hat{n}) \hat{n}$$
+
+**Deviation Produced by Plane Mirror**
+$$\delta = 180^\circ - 2i$$
+
+**Spherical Mirror Formula**
+$$\frac{1}{v} + \frac{1}{u} = \frac{1}{f}$$
+
+**Transverse Magnification (Mirror)**
+$$m = -\frac{v}{u} = \frac{f}{f - u}$$
+
+**Longitudinal Magnification (Mirror)**
+$$m_L = -\left(\frac{v}{u}\right)^2$$
+
+**Image Velocity Along Axis (Mirror)**
+$$(v_{i,x} - v_{m,x}) = -\left(\frac{v}{u}\right)^2 (v_{o,x} - v_{m,x})$$
+
+**Snell's Law**
+$$n_1 \sin i = n_2 \sin r$$
+
+**Apparent Depth**
+$$d' = d \left(\frac{n_2}{n_1}\right)$$
+
+**Normal Shift**
+$$\Delta x = d \left( 1 - \frac{n_2}{n_1} \right)$$
+
+**Critical Angle for TIR**
+$$\sin\theta_c = \frac{n_2}{n_1}$$
+
+**Single Spherical Surface Refraction**
+$$\frac{n_2}{v} - \frac{n_1}{u} = \frac{n_2 - n_1}{R}$$
+
+**Lens-Maker's Formula**
+$$\frac{1}{f} = \left( \frac{n_{lens}}{n_{medium}} - 1 \right) \left( \frac{1}{R_1} - \frac{1}{R_2} \right)$$
+
+**Thin Lens Formula**
+$$\frac{1}{v} - \frac{1}{u} = \frac{1}{f}$$
+
+**Transverse Magnification (Lens)**
+$$m = \frac{v}{u} = \frac{f}{f + u}$$
+
+**Equivalent Focal Length of Lenses in Contact**
+$$\frac{1}{f_{eq}} = \frac{1}{f_1} + \frac{1}{f_2}$$
+
+**Equivalent Power of Separated Lenses**
+$$P_{eq} = P_1 + P_2 - d P_1 P_2$$
+
+**Equivalent Focal Length of Silvered Lens**
+$$\frac{1}{F_{eq}} = \frac{2}{f_L} + \frac{1}{f_M}$$
+
+**Lens Displacement Method Focal Length**
+$$f = \frac{D^2 - d^2}{4D}$$
+
+**Prism Deviation Angle**
+$$\delta = i + e - A$$
+
+**Prism Minimum Deviation Formula**
+$$n = \frac{\sin\left(\frac{A + \delta_m}{2}\right)}{\sin\left(\frac{A}{2}\right)}$$
+
+**Small Angle Prism Deviation**
+$$\delta = (n - 1) A$$
+
+**Dispersive Power of Prism**
+$$\omega = \frac{n_v - n_r}{n_y - 1}$$
+
+**Condition for Achromatic Combination**
+$$(n_v - n_r)A + (n_v' - n_r')A' = 0$$
+
+**Magnifying Power of Simple Microscope (Near Point)**
+$$M = 1 + \frac{D}{f}$$
+
+**Magnifying Power of Simple Microscope (Normal)**
+$$M = \frac{D}{f}$$
+
+**Magnifying Power of Compound Microscope (Normal)**
+$$M = -\frac{v_o}{u_o} \left(\frac{D}{f_e}\right)$$
+
+**Magnifying Power of Astronomical Telescope (Normal)**
+$$M = -\frac{f_o}{f_e}$$
+
+**Limit of Resolution of Telescope**
+$$\Delta\theta = \frac{1.22 \lambda}{a}$$
+
+## CHAPTER 24: WAVE OPTICS
+
+**Resultant Amplitude of Interference**
+$$A = \sqrt{A_1^2 + A_2^2 + 2 A_1 A_2 \cos\phi}$$
+
+**Resultant Intensity of Interference**
+$$I = I_1 + I_2 + 2\sqrt{I_1 I_2} \cos\phi$$
+
+**Phase Difference-Path Difference Relation**
+$$\phi = \frac{2\pi}{\lambda} \Delta x$$
+
+**YDSE Path Difference**
+$$\Delta x = \frac{d \cdot y}{D}$$
+
+**YDSE Maxima Position**
+$$y_n = \frac{n \lambda D}{d}$$
+
+**YDSE Minima Position**
+$$y_n' = (2n - 1) \frac{\lambda D}{2d}$$
+
+**YDSE Fringe Width**
+$$\beta = \frac{\lambda D}{d}$$
+
+**YDSE Angular Fringe Width**
+$$\theta_0 = \frac{\lambda}{d}$$
+
+**YDSE Intensity Distribution**
+$$I(y) = 4 I_0 \cos^2\left( \frac{\pi d y}{\lambda D} \right)$$
+
+**Shift of Fringe Pattern due to Slab Insertion**
+$$S = \frac{(n - 1)t D}{d}$$
+
+**Reflected Thin Film Constructive Interference**
+$$2 n t \cos r = (2m - 1) \frac{\lambda}{2}$$
+
+**Reflected Thin Film Destructive Interference**
+$$2 n t \cos r = m \lambda$$
+
+**Single Slit Diffraction Minima Condition**
+$$a \sin\theta = n \lambda$$
+
+**Width of Central Maximum (Diffraction)**
+$$W_0 = \frac{2\lambda D}{a}$$
+
+**Transmitted Intensity through Polaroid (Unpolarized Light)**
+$$I = \frac{I_0}{2}$$
+
+**Malus's Law**
+$$I_2 = I_1 \cos^2\theta$$
+
+**Brewster's Law**
+$$\tan i_p = \frac{n_2}{n_1}$$
