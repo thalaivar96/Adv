@@ -23,379 +23,280 @@
         processEscapes: true,
         processEnvironments: true
       },
-      chtml: { scale: 1.15 } // Slightly scaled down for better line integration
+      chtml: { scale: 1.15 }
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
-    /* --- CSS Variables --- */
+    /* --- CSS Variables (Dark & Light Mode) --- */
     :root {
+      /* Dark Theme (Default) */
       --bg-body: #0b0f19;
       --bg-sidebar: #111827;
       --bg-card: #1f2937;
       --bg-hover: #374151;
       --text-main: #9ca3af;
       --text-heading: #f9fafb;
+      --text-muted: #6b7280;
       --accent: #3b82f6;
       --accent-hover: #60a5fa;
       --border: #374151;
+      --inline-math-bg: rgba(255, 255, 255, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    }
+
+    body.light-mode {
+      --bg-body: #ffffff;
+      --bg-sidebar: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-hover: #e2e8f0;
+      --text-main: #475569;
+      --text-heading: #0f172a;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e2e8f0;
+      --inline-math-bg: rgba(0, 0, 0, 0.04);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     }
 
     /* --- Reset & Base Styles --- */
     * { box-sizing: border-box; }
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0; padding: 0;
       background: var(--bg-body);
       color: var(--text-main);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Inter', sans-serif;
       font-size: 16px;
       line-height: 1.8;
       display: flex;
       height: 100vh;
       overflow: hidden; 
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    /* --- Custom Scrollbar --- */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-main); }
 
     /* --- Sidebar Menu --- */
     #sidebar {
-      width: 300px;
-      min-width: 300px;
+      width: 300px; min-width: 300px;
       background: var(--bg-sidebar);
       border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       z-index: 1000;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s, border-color 0.3s;
     }
 
     .sidebar-header {
       padding: 24px 20px;
       border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .sidebar-title {
       color: var(--text-heading);
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0 0 16px 0;
-      letter-spacing: 0.5px;
+      font-size: 18px; font-weight: 600;
+      margin: 0; letter-spacing: 0.5px;
       text-transform: uppercase;
     }
 
-    .search-container {
-      position: relative;
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-heading);
+      width: 32px; height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
     }
+    .theme-toggle:hover { background: var(--bg-hover); }
 
+    .search-container { position: relative; }
     .search-icon {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      fill: #6b7280;
+      position: absolute; left: 12px; top: 50%;
+      transform: translateY(-50%); width: 16px; height: 16px; fill: var(--text-muted);
     }
-
     #search-input {
       width: 100%;
       padding: 10px 12px 10px 36px;
-      background: rgba(0,0,0,0.2);
+      background: transparent;
       border: 1px solid var(--border);
       border-radius: 8px;
       color: var(--text-heading);
-      font-size: 14px;
-      font-family: 'Inter', sans-serif;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      font-size: 14px; font-family: 'Inter', sans-serif;
+      outline: none; transition: all 0.2s;
     }
     #search-input:focus { 
       border-color: var(--accent); 
       box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
     }
-    #search-input::placeholder { color: #6b7280; }
 
     .nav-buttons {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 0;
-      display: flex;
-      flex-direction: column;
+      flex: 1; overflow-y: auto; padding: 12px 0; display: flex; flex-direction: column;
     }
-
     .nav-btn {
-      background: transparent;
-      border: none;
-      border-left: 3px solid transparent;
-      color: var(--text-main);
-      padding: 12px 20px 12px 17px; /* Compensate for border */
-      text-align: left;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.2s;
-      width: 100%;
+      background: transparent; border: none; border-left: 3px solid transparent;
+      color: var(--text-main); padding: 12px 20px 12px 17px;
+      text-align: left; cursor: pointer; font-size: 14px; font-weight: 500;
+      transition: all 0.2s; width: 100%;
     }
-
-    .nav-btn:hover { 
-      background: rgba(255, 255, 255, 0.03); 
-      color: var(--text-heading); 
-    }
-    
+    .nav-btn:hover { background: var(--bg-hover); color: var(--text-heading); }
     .nav-btn.active {
       background: rgba(59, 130, 246, 0.1);
-      color: var(--accent-hover);
+      color: var(--accent);
       border-left-color: var(--accent);
       font-weight: 600;
     }
 
     /* --- Main Content Layout --- */
-    #main-area {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0; 
-      position: relative;
-    }
+    #main-area { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; }
+    #progress-container { position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 100; }
+    #progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s ease-out; }
 
-    /* Reading Progress Bar */
-    #progress-container {
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: transparent;
-      z-index: 100;
-    }
-    #progress-bar {
-      height: 100%;
-      background: var(--accent);
-      width: 0%;
-      transition: width 0.1s ease-out;
-    }
-
-    /* Mobile Top Bar */
     #mobile-topbar {
       display: none;
-      background: rgba(17, 24, 39, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      padding: 12px 20px;
-      border-bottom: 1px solid var(--border);
-      align-items: center;
-      gap: 15px;
-      z-index: 900;
-      position: sticky;
-      top: 0;
+      background: var(--bg-sidebar);
+      padding: 12px 20px; border-bottom: 1px solid var(--border);
+      align-items: center; gap: 15px; z-index: 900; position: sticky; top: 0;
     }
-
     .menu-toggle-btn {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-heading);
-      padding: 6px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.2s;
-    }
-    .menu-toggle-btn:hover { background: var(--bg-hover); }
-
-    .mobile-page-title {
-      color: var(--text-heading);
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-heading); padding: 6px 10px; border-radius: 6px; cursor: pointer;
     }
 
-    /* Scrollable Content Region */
-    #content-scroll-area {
-      flex: 1;
-      overflow-y: auto;
-      padding: 50px 40px;
-      scroll-behavior: smooth;
-    }
+    #content-scroll-area { flex: 1; overflow-y: auto; padding: 50px 40px; scroll-behavior: smooth; }
+    .content-container { max-width: 760px; margin: 0 auto; opacity: 0; transform: translateY(15px); }
+    .fade-in { animation: fadeIn 0.4s ease-out forwards; }
+    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 
-    .content-container {
-      max-width: 800px;
-      margin: 0 auto;
-      opacity: 0;
-      transform: translateY(15px);
-    }
-
-    /* Animation class applied in JS */
-    .fade-in {
-      animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* --- Typography & Elements in Content --- */
-    h1 { 
-      font-size: 2.5em; 
-      color: var(--text-heading); 
-      border-bottom: 1px solid var(--border); 
-      padding-bottom: 12px; 
-      margin-top: 0; 
-      margin-bottom: 24px;
-      font-weight: 700;
-    }
-    h2 { font-size: 1.75em; color: var(--text-heading); margin-top: 1.8em; font-weight: 600;}
-    h3 { font-size: 1.25em; color: #e5e7eb; margin-top: 1.5em; font-weight: 600;}
-    p { margin-bottom: 1.2em; }
-    li { margin-bottom: 0.5em; }
+    /* --- Article Typography & Elements --- */
+    h1, h2, h3 { color: var(--text-heading); font-weight: 600; scroll-margin-top: 80px; }
+    h1 { font-size: 2.4em; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin: 0 0 10px 0; font-weight: 700; }
+    h2 { font-size: 1.7em; margin-top: 1.8em; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    h3 { font-size: 1.25em; margin-top: 1.5em; }
+    p, li { margin-bottom: 1em; }
     
-    a { 
-      color: var(--accent); 
-      text-decoration: none; 
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    a:hover { color: var(--accent-hover); border-bottom-color: var(--accent-hover); }
+    a { color: var(--accent); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--accent-hover); text-decoration: underline; }
 
-    /* Code & Tables (common in markdown notes) */
-    code {
-      background: var(--bg-card);
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.9em;
-      color: #e5e7eb;
+    /* Reading Meta */
+    .article-meta {
+      display: flex; gap: 15px; color: var(--text-muted); font-size: 0.9em;
+      margin-bottom: 30px; align-items: center;
     }
-    pre code { background: transparent; padding: 0; }
-    pre {
+    
+    /* Table of Contents */
+    .toc-container {
       background: var(--bg-card);
-      padding: 16px;
-      border-radius: 8px;
       border: 1px solid var(--border);
-      overflow-x: auto;
+      border-radius: 8px;
+      padding: 20px; margin: 30px 0;
     }
-    table { width: 100%; border-collapse: collapse; margin: 24px 0; }
-    th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
-    th { background: rgba(255,255,255,0.03); color: var(--text-heading); }
+    .toc-title { font-weight: 600; color: var(--text-heading); margin-bottom: 12px; font-size: 1.1em; }
+    .toc-list { list-style: none; padding: 0; margin: 0; font-size: 0.95em; }
+    .toc-list li { margin-bottom: 8px; }
+    .toc-list li.toc-h3 { padding-left: 20px; font-size: 0.9em; }
+    .toc-list a { color: var(--text-main); }
+    .toc-list a:hover { color: var(--accent); text-decoration: none; }
+
+    /* Images */
+    img {
+      max-width: 100%; height: auto; display: block; margin: 32px auto;
+      border-radius: 8px; border: 1px solid var(--border); background: #fff; /* Good for transparent diagrams */
+    }
 
     /* Math Styling */
     .formula {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px;
-      margin: 32px 0;
-      text-align: center;
-      overflow-x: auto;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 20px; margin: 32px 0; text-align: center; overflow-x: auto;
+      box-shadow: var(--shadow);
     }
-    
     .inline-formula {
-      color: #e5e7eb; /* Brighter text to stand out slightly */
-      background: rgba(255, 255, 255, 0.04);
-      padding: 2px 4px;
-      border-radius: 4px;
-      font-size: 1em;
+      color: var(--text-heading); background: var(--inline-math-bg);
+      padding: 2px 5px; border-radius: 4px; font-size: 1em;
     }
-    
-    mjx-container[display="true"] { margin: 0 !important; } /* Reset default mathjax margin in cards */
-    
-    /* Loader */
+    mjx-container[display="true"] { margin: 0 !important; }
+
+    /* Next / Prev Navigation */
+    .chapter-nav {
+      display: flex; justify-content: space-between; gap: 20px;
+      margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border);
+    }
+    .chap-nav-btn {
+      flex: 1; padding: 16px 20px; border-radius: 8px; border: 1px solid var(--border);
+      background: var(--bg-card); color: var(--text-heading); text-decoration: none;
+      display: flex; flex-direction: column; transition: all 0.2s; cursor: pointer;
+    }
+    .chap-nav-btn:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+    .chap-nav-label { font-size: 0.8em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+    .chap-nav-title { font-weight: 600; font-size: 1.1em; color: var(--accent); }
+    .nav-right { text-align: right; }
+
+    /* Loaders & Buttons */
     .loader {
-      width: 48px; height: 48px;
-      border: 3px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 80px auto;
+      width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.8s linear infinite; margin: 80px auto;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Back to Top Button */
     #back-to-top {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 44px;
-      height: 44px;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      font-size: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
-      opacity: 0;
-      transform: translateY(20px) scale(0.9);
-      pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 800;
+      position: fixed; bottom: 30px; right: 30px; width: 44px; height: 44px;
+      background: var(--accent); color: white; border: none; border-radius: 50%;
+      cursor: pointer; opacity: 0; transform: translateY(20px); pointer-events: none;
+      transition: all 0.3s; display: flex; align-items: center; justify-content: center; z-index: 800;
     }
-    #back-to-top.visible {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-      pointer-events: auto;
-    }
-    #back-to-top:hover {
-      background: var(--accent-hover);
-      transform: translateY(-3px) scale(1.05);
-    }
+    #back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
 
-    /* --- Mobile Overlay --- */
     #overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(3px);
-      z-index: 999;
-      opacity: 0;
-      transition: opacity 0.3s;
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); z-index: 999; opacity: 0; transition: opacity 0.3s;
     }
 
-    /* --- Responsive Media Query --- */
     @media (max-width: 850px) {
       #mobile-topbar { display: flex; }
-      #sidebar {
-        position: fixed;
-        left: 0; top: 0; bottom: 0;
-        transform: translateX(-100%); 
-      }
+      #sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); }
       #sidebar.open { transform: translateX(0); }
       #overlay.show { display: block; opacity: 1; }
       #content-scroll-area { padding: 30px 20px; }
-      #progress-container { top: 57px; } /* Push below mobile topbar */
-      #back-to-top { bottom: 20px; right: 20px; }
+      #progress-container { top: 57px; }
+      .chapter-nav { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Overlay for mobile clicking to close -->
   <div id="overlay" onclick="closeSidebar()"></div>
 
   <!-- Sidebar -->
   <nav id="sidebar">
     <div class="sidebar-header">
-      <h2 class="sidebar-title">Chapters</h2>
+      <div class="sidebar-top-row">
+        <h2 class="sidebar-title">Chapters</h2>
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme" id="theme-btn">
+          <svg id="moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+          <svg id="sun-icon" style="display:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+      </div>
       <div class="search-container">
-        <!-- SVG Search Icon -->
-        <svg class="search-icon" viewBox="0 0 24 24">
-          <path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
-        </svg>
+        <svg class="search-icon" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
         <input type="search" id="search-input" placeholder="Search topics...">
       </div>
     </div>
-    <div class="nav-buttons">
+    <div class="nav-buttons" id="nav-container">
       <button class="nav-btn" data-file="kinematics.md" onclick="loadChapter('kinematics.md')">Kinematics</button>
       <button class="nav-btn" data-file="error.md" onclick="loadChapter('error.md')">Errors & Measurements</button>
       <button class="nav-btn" data-file="NLM.md" onclick="loadChapter('NLM.md')">Laws of Motion (NLM)</button>
@@ -411,199 +312,227 @@
       <button class="nav-btn" data-file="KTG.md" onclick="loadChapter('KTG.md')">Kinetic Theory Of Gases</button>
       <button class="nav-btn" data-file="thermodynamics.md" onclick="loadChapter('thermodynamics.md')">Thermodynamics</button>
       <button class="nav-btn" data-file="ELECTROSTATICS.md" onclick="loadChapter('ELECTROSTATICS.md')">Electrostatics</button>
-      <button class="nav-btn" data-file="capacitors.md" onclick="loadChapter('capacitors.md')">Capacitors</button>
       <button class="nav-btn" data-file="complete.md" onclick="loadChapter('complete.md')">Complete Notes</button>
     </div>
   </nav>
 
   <!-- Main Area -->
   <main id="main-area">
-    
-    <!-- Progress Bar -->
-    <div id="progress-container">
-      <div id="progress-bar"></div>
-    </div>
-
-    <!-- Mobile Top Bar -->
+    <div id="progress-container"><div id="progress-bar"></div></div>
     <header id="mobile-topbar">
-      <button class="menu-toggle-btn" onclick="openSidebar()" aria-label="Open Menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path>
-        </svg>
-      </button>
-      <h1 class="mobile-page-title">Adv Physics Notes</h1>
+      <button class="menu-toggle-btn" onclick="openSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path></svg></button>
+      <h1 class="mobile-page-title" style="margin:0; font-size:16px;">Adv Physics Notes</h1>
     </header>
 
-    <!-- Scrollable Content -->
     <div id="content-scroll-area">
-      <div class="content-container" id="content">
-        <!-- Markdown content loads here -->
-      </div>
+      <div class="content-container" id="content"></div>
     </div>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" onclick="scrollToTop()" aria-label="Back to Top">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 19V5M5 12l7-7 7 7"/>
-      </svg>
+    <button id="back-to-top" onclick="scrollToTop()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
     </button>
   </main>
 
   <script>
-    // --- UI Interactions ---
+    // --- UI Interactions & Theme ---
     const scrollArea = document.getElementById('content-scroll-area');
-    const progressBar = document.getElementById('progress-bar');
-    const backToTopBtn = document.getElementById('back-to-top');
     const contentContainer = document.getElementById('content');
+    
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('moon-icon').style.display = 'none';
+        document.getElementById('sun-icon').style.display = 'block';
+      }
+    }
+    
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      document.getElementById('moon-icon').style.display = isLight ? 'none' : 'block';
+      document.getElementById('sun-icon').style.display = isLight ? 'block' : 'none';
+    }
+    initTheme();
 
     function openSidebar() {
       document.getElementById('sidebar').classList.add('open');
       document.getElementById('overlay').classList.add('show');
     }
-
     function closeSidebar() {
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('overlay').classList.remove('show');
     }
+    function scrollToTop() { scrollArea.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-    function scrollToTop() {
-      scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Update Progress Bar & Back-to-Top Button on scroll
     scrollArea.addEventListener('scroll', () => {
-      // Progress Bar
       const scrollTop = scrollArea.scrollTop;
       const docHeight = scrollArea.scrollHeight - scrollArea.clientHeight;
-      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      progressBar.style.width = scrollPercent + '%';
-
-      // Back to top button visibility
-      if (scrollTop > 400) {
-        backToTopBtn.classList.add('visible');
-      } else {
-        backToTopBtn.classList.remove('visible');
-      }
+      document.getElementById('progress-bar').style.width = docHeight > 0 ? (scrollTop / docHeight) * 100 + '%' : '0%';
+      const btn = document.getElementById('back-to-top');
+      scrollTop > 400 ? btn.classList.add('visible') : btn.classList.remove('visible');
     });
 
-    // --- Search Functionality ---
     document.getElementById('search-input').addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
+      const q = e.target.value.toLowerCase();
       document.querySelectorAll('.nav-btn').forEach(btn => {
-        const match = btn.textContent.toLowerCase().includes(query);
-        btn.style.display = match ? 'block' : 'none';
+        btn.style.display = btn.textContent.toLowerCase().includes(q) ? 'block' : 'none';
       });
     });
 
-    // --- Chapter Loading Logic ---
-    const LAST_CHAPTER_KEY = "jee-formula-last-chapter";
-    const DEFAULT_CHAPTER = "kinematics.md";
+    // --- Content Processing & DOM Manipulation ---
+    const buttons = Array.from(document.querySelectorAll('.nav-btn'));
 
-    function fileToHash(file) {
-      return file.replace(/\.md$/i, "").toLowerCase();
+    function generateTOCAndMeta(html, rawMarkdown) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      
+      // Calculate Reading Time
+      const wordCount = rawMarkdown.replace(/[^\w\s]/gi, '').split(/\s+/).length;
+      const readTime = Math.ceil(wordCount / 200); // Avg 200 wpm
+      
+      const h1 = tempDiv.querySelector('h1');
+      if (h1) {
+        // Insert Meta Tag under H1
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'article-meta';
+        metaDiv.innerHTML = `
+          <span>⏱️ ${readTime} min read</span>
+          <span>📚 ${wordCount} words</span>
+        `;
+        h1.parentNode.insertBefore(metaDiv, h1.nextSibling);
+
+        // Generate Table of Contents
+        const headings = tempDiv.querySelectorAll('h2, h3');
+        if (headings.length > 0) {
+          const tocDiv = document.createElement('div');
+          tocDiv.className = 'toc-container';
+          tocDiv.innerHTML = `<div class="toc-title">On this page</div><ul class="toc-list"></ul>`;
+          const tocList = tocDiv.querySelector('ul');
+
+          headings.forEach((heading, index) => {
+            const id = heading.id || `section-${index}`;
+            heading.id = id; // Ensure ID exists for jumping
+            
+            const li = document.createElement('li');
+            li.className = heading.tagName.toLowerCase() === 'h3' ? 'toc-h3' : 'toc-h2';
+            li.innerHTML = `<a href="#${id}">${heading.textContent}</a>`;
+            tocList.appendChild(li);
+          });
+          
+          metaDiv.parentNode.insertBefore(tocDiv, metaDiv.nextSibling);
+        }
+      }
+      return tempDiv.innerHTML;
     }
 
-    function hashToFile(hash) {
-      const normalizedHash = hash.replace(/^#/, "").trim().toLowerCase();
-      if (!normalizedHash) return null;
-      const btn = document.querySelector(`.nav-btn[data-file="${normalizedHash}.md"]`);
-      return btn ? `${normalizedHash}.md` : null;
-    }
+    function generateFooterNav(currentFile) {
+      const index = buttons.findIndex(b => b.dataset.file === currentFile);
+      if (index === -1) return '';
 
-    function setActiveButton(file) {
-      document.querySelectorAll(".nav-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.file === file);
-      });
+      const prev = index > 0 ? buttons[index - 1] : null;
+      const next = index < buttons.length - 1 ? buttons[index + 1] : null;
+
+      let navHtml = '<div class="chapter-nav">';
+      if (prev) {
+        navHtml += `
+          <div class="chap-nav-btn" onclick="loadChapter('${prev.dataset.file}')">
+            <span class="chap-nav-label">Previous Chapter</span>
+            <span class="chap-nav-title">← ${prev.textContent}</span>
+          </div>`;
+      } else { navHtml += '<div></div>'; }
+      
+      if (next) {
+        navHtml += `
+          <div class="chap-nav-btn nav-right" onclick="loadChapter('${next.dataset.file}')">
+            <span class="chap-nav-label">Next Chapter</span>
+            <span class="chap-nav-title">${next.textContent} →</span>
+          </div>`;
+      } else { navHtml += '<div></div>'; }
+      navHtml += '</div>';
+      
+      return navHtml;
     }
 
     function extractMath(content) {
       const mathStore = [];
-      function stash(html) {
-        const token = `@@MATH_${mathStore.length}@@`;
-        mathStore.push(html);
-        return token;
-      }
-      const withBlockMath = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, eq) => {
-        return stash(`<div class="formula">$$${eq.trim()}$$</div>`);
-      });
-      const withInlineMath = withBlockMath.replace(/(?<!\\)\$(?!\$)(.+?)(?<!\\)\$/g, (_, eq) => {
-        return stash(`<span class="inline-formula">$${eq.trim()}$</span>`);
-      });
-      return { content: withInlineMath, mathStore };
+      function stash(html) { const t = `@@MATH_${mathStore.length}@@`; mathStore.push(html); return t; }
+      let out = content.replace(/\$\$([\s\S]*?)\$\$/g, (_, eq) => stash(`<div class="formula">$$${eq.trim()}$$</div>`));
+      out = out.replace(/(?<!\\)\$(?!\$)(.+?)(?<!\\)\$/g, (_, eq) => stash(`<span class="inline-formula">$${eq.trim()}$</span>`));
+      return { content: out, mathStore };
     }
 
     function restoreMath(html, mathStore) {
       return html.replace(/@@MATH_(\d+)@@/g, (_, idx) => mathStore[Number(idx)]);
     }
 
-    async function render(markdown) {
+    // --- Core Loading ---
+    async function render(markdown, filename) {
       const { content: safeMarkdown, mathStore } = extractMath(markdown);
-      const parsedHtml = marked.parse(safeMarkdown);
-      const finalHtml = restoreMath(parsedHtml, mathStore);
+      let html = marked.parse(safeMarkdown);
+      html = restoreMath(html, mathStore);
       
+      // Inject TOC and Meta
+      html = generateTOCAndMeta(html, markdown);
+      
+      // Inject Footer Next/Prev Navigation
+      html += generateFooterNav(filename);
+
       if (window.MathJax && typeof MathJax.typesetClear === "function") {
         MathJax.typesetClear([contentContainer]);
       }
       
-      contentContainer.innerHTML = finalHtml;
+      contentContainer.innerHTML = html;
       await MathJax.typesetPromise([contentContainer]);
     }
 
-    function showLoader() {
-      // Remove animation class before loading new content
+    function loadChapter(file, updateHash = true) {
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.file === file));
+      closeSidebar(); 
       contentContainer.classList.remove('fade-in');
       contentContainer.innerHTML = '<div class="loader"></div>';
-    }
-
-    function loadChapter(file, updateHash = true) {
-      setActiveButton(file);
-      closeSidebar(); 
-      showLoader();
-
-      // Reset scroll tracking
-      progressBar.style.width = '0%';
-      backToTopBtn.classList.remove('visible');
+      document.getElementById('progress-bar').style.width = '0%';
+      document.getElementById('back-to-top').classList.remove('visible');
 
       fetch(file)
-        .then(res => {
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res.text();
-        })
+        .then(res => { if (!res.ok) throw new Error(); return res.text(); })
         .then(async data => {
-          await render(data);
-          
-          // Trigger the fade-in animation
-          void contentContainer.offsetWidth; // Trigger reflow to restart animation
+          await render(data, file);
+          void contentContainer.offsetWidth; 
           contentContainer.classList.add('fade-in');
 
-          localStorage.setItem(LAST_CHAPTER_KEY, file);
-          if (updateHash) window.location.hash = fileToHash(file);
-          
-          // Scroll to top immediately upon loading
+          localStorage.setItem("jee-formula-last", file);
+          if (updateHash) window.history.pushState(null, null, `#${file.replace('.md', '')}`);
           scrollArea.scrollTo(0, 0); 
+          
+          // Handle inner page anchors if clicked from TOC
+          contentContainer.querySelectorAll('.toc-list a').forEach(a => {
+            a.addEventListener('click', (e) => {
+              e.preventDefault();
+              const targetId = a.getAttribute('href').substring(1);
+              const targetEl = document.getElementById(targetId);
+              if(targetEl) {
+                targetEl.scrollIntoView({ behavior: 'smooth' });
+              }
+            });
+          });
         })
-        .catch(err => {
-          contentContainer.innerHTML = `
-            <div style="text-align:center; padding: 40px 20px;">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;">
-                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
-              </svg>
-              <h2 style="color: #ef4444; margin-top:0;">Failed to load chapter</h2>
-              <p>Could not find <b>${file}</b>. Make sure the markdown file exists in the same folder.</p>
-            </div>`;
+        .catch(() => {
+          contentContainer.innerHTML = `<h2>Error 404</h2><p>Could not load <b>${file}</b>.</p>`;
           contentContainer.classList.add('fade-in');
-          console.error(err);
         });
     }
 
-    // --- Initialization ---
-    window.addEventListener("hashchange", () => {
-      const fileFromHash = hashToFile(window.location.hash);
-      if (fileFromHash) loadChapter(fileFromHash, false);
+    // --- Init ---
+    window.addEventListener("popstate", () => {
+      const hash = window.location.hash.replace('#', '') + '.md';
+      if (document.querySelector(`[data-file="${hash}"]`)) loadChapter(hash, false);
     });
 
-    const initialChapter = hashToFile(window.location.hash) || localStorage.getItem(LAST_CHAPTER_KEY) || DEFAULT_CHAPTER;
-    loadChapter(initialChapter, !window.location.hash);
+    const initHash = window.location.hash.replace('#', '') + '.md';
+    const initialChapter = document.querySelector(`[data-file="${initHash}"]`) ? initHash : 
+                          (localStorage.getItem("jee-formula-last") || "kinematics.md");
+    loadChapter(initialChapter, false);
   </script>
 </body>
 </html>
