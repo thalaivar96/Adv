@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Adv Physics Notes</title>
 
+  <!-- Modern Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!-- Markdown Parser -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -18,33 +23,52 @@
         processEscapes: true,
         processEnvironments: true
       },
-      chtml: { scale: 1.2 }
+      chtml: { scale: 1.15 } // Slightly scaled down for better line integration
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
   <style>
+    /* --- CSS Variables --- */
+    :root {
+      --bg-body: #0b0f19;
+      --bg-sidebar: #111827;
+      --bg-card: #1f2937;
+      --bg-hover: #374151;
+      --text-main: #9ca3af;
+      --text-heading: #f9fafb;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --border: #374151;
+    }
+
     /* --- Reset & Base Styles --- */
     * { box-sizing: border-box; }
     body {
       margin: 0;
       padding: 0;
-      background: #000;
-      color: #ccc;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       font-size: 16px;
-      line-height: 1.7;
+      line-height: 1.8;
       display: flex;
       height: 100vh;
-      overflow: hidden; /* Prevent body scroll, use inner scroll areas */
+      overflow: hidden; 
     }
+
+    /* --- Custom Scrollbar --- */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
 
     /* --- Sidebar Menu --- */
     #sidebar {
-      width: 280px;
-      min-width: 280px;
-      background: #0a0a0a;
-      border-right: 1px solid #222;
+      width: 300px;
+      min-width: 300px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       z-index: 1000;
@@ -52,59 +76,83 @@
     }
 
     .sidebar-header {
-      padding: 20px 15px;
-      background: #000;
-      border-bottom: 1px solid #222;
+      padding: 24px 20px;
+      border-bottom: 1px solid var(--border);
     }
 
     .sidebar-title {
-      color: #fff;
-      font-size: 20px;
+      color: var(--text-heading);
+      font-size: 18px;
       font-weight: 600;
-      margin: 0 0 15px 0;
-      text-align: center;
-      letter-spacing: 1px;
+      margin: 0 0 16px 0;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .search-container {
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      fill: #6b7280;
     }
 
     #search-input {
       width: 100%;
-      padding: 10px 12px;
-      background: #141414;
-      border: 1px solid #333;
-      border-radius: 6px;
-      color: #fff;
+      padding: 10px 12px 10px 36px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-heading);
       font-size: 14px;
+      font-family: 'Inter', sans-serif;
       outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
-    #search-input:focus { border-color: #555; }
+    #search-input:focus { 
+      border-color: var(--accent); 
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+    #search-input::placeholder { color: #6b7280; }
 
     .nav-buttons {
       flex: 1;
       overflow-y: auto;
-      padding: 15px;
+      padding: 12px 0;
       display: flex;
       flex-direction: column;
-      gap: 8px;
     }
 
     .nav-btn {
-      background: #141414;
-      border: 1px solid #2a2a2a;
-      color: #bbb;
-      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-left: 3px solid transparent;
+      color: var(--text-main);
+      padding: 12px 20px 12px 17px; /* Compensate for border */
       text-align: left;
-      border-radius: 6px;
       cursor: pointer;
       font-size: 14px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
       transition: all 0.2s;
       width: 100%;
     }
 
-    .nav-btn:hover { background: #222; color: #fff; }
+    .nav-btn:hover { 
+      background: rgba(255, 255, 255, 0.03); 
+      color: var(--text-heading); 
+    }
+    
     .nav-btn.active {
-      background: #fff;
-      color: #000;
-      border-color: #fff;
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--accent-hover);
+      border-left-color: var(--accent);
       font-weight: 600;
     }
 
@@ -114,36 +162,56 @@
       display: flex;
       flex-direction: column;
       min-width: 0; 
+      position: relative;
+    }
+
+    /* Reading Progress Bar */
+    #progress-container {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: transparent;
+      z-index: 100;
+    }
+    #progress-bar {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s ease-out;
     }
 
     /* Mobile Top Bar */
     #mobile-topbar {
       display: none;
-      background: #000;
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       padding: 12px 20px;
-      border-bottom: 1px solid #222;
+      border-bottom: 1px solid var(--border);
       align-items: center;
       gap: 15px;
       z-index: 900;
+      position: sticky;
+      top: 0;
     }
 
     .menu-toggle-btn {
-      background: none;
-      border: 1px solid #444;
-      color: #fff;
-      font-size: 20px;
-      padding: 6px 12px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-heading);
+      padding: 6px 10px;
       border-radius: 6px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background 0.2s;
     }
-    .menu-toggle-btn:active { background: #222; }
+    .menu-toggle-btn:hover { background: var(--bg-hover); }
 
     .mobile-page-title {
-      color: #fff;
-      font-size: 18px;
+      color: var(--text-heading);
+      font-size: 16px;
       font-weight: 600;
       margin: 0;
     }
@@ -152,58 +220,143 @@
     #content-scroll-area {
       flex: 1;
       overflow-y: auto;
-      padding: 40px;
+      padding: 50px 40px;
       scroll-behavior: smooth;
     }
 
     .content-container {
-      max-width: 850px;
+      max-width: 800px;
       margin: 0 auto;
+      opacity: 0;
+      transform: translateY(15px);
+    }
+
+    /* Animation class applied in JS */
+    .fade-in {
+      animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* --- Typography & Elements in Content --- */
-    h1 { font-size: 2.2em; color: #fff; border-bottom: 1px solid #222; padding-bottom: 10px; margin-top: 0; }
-    h2 { font-size: 1.6em; color: #eee; margin-top: 1.5em; }
-    h3 { color: #ddd; }
-    p, li { color: #aaa; }
-    a { color: #4da6ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    h1 { 
+      font-size: 2.5em; 
+      color: var(--text-heading); 
+      border-bottom: 1px solid var(--border); 
+      padding-bottom: 12px; 
+      margin-top: 0; 
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+    h2 { font-size: 1.75em; color: var(--text-heading); margin-top: 1.8em; font-weight: 600;}
+    h3 { font-size: 1.25em; color: #e5e7eb; margin-top: 1.5em; font-weight: 600;}
+    p { margin-bottom: 1.2em; }
+    li { margin-bottom: 0.5em; }
+    
+    a { 
+      color: var(--accent); 
+      text-decoration: none; 
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    a:hover { color: var(--accent-hover); border-bottom-color: var(--accent-hover); }
 
-    .formula {
-      background: #111;
-      border: 1px solid #2a2a2a;
+    /* Code & Tables (common in markdown notes) */
+    code {
+      background: var(--bg-card);
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.9em;
+      color: #e5e7eb;
+    }
+    pre code { background: transparent; padding: 0; }
+    pre {
+      background: var(--bg-card);
+      padding: 16px;
       border-radius: 8px;
-      padding: 20px;
-      margin: 25px 0;
-      text-align: center;
+      border: 1px solid var(--border);
       overflow-x: auto;
     }
-    .inline-formula {
-      background: #111;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.95em;
+    table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+    th { background: rgba(255,255,255,0.03); color: var(--text-heading); }
+
+    /* Math Styling */
+    .formula {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 32px 0;
+      text-align: center;
+      overflow-x: auto;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
     
-    mjx-container[display="true"] { margin: 1em 0 !important; }
+    .inline-formula {
+      color: #e5e7eb; /* Brighter text to stand out slightly */
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 1em;
+    }
     
+    mjx-container[display="true"] { margin: 0 !important; } /* Reset default mathjax margin in cards */
+    
+    /* Loader */
     .loader {
-      width: 40px; height: 40px;
-      border: 3px solid #222;
-      border-top-color: #fff;
+      width: 48px; height: 48px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
-      margin: 60px auto;
+      margin: 80px auto;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Back to Top Button */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 800;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    #back-to-top:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px) scale(1.05);
+    }
 
     /* --- Mobile Overlay --- */
     #overlay {
       display: none;
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(2px);
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(3px);
       z-index: 999;
       opacity: 0;
       transition: opacity 0.3s;
@@ -215,11 +368,13 @@
       #sidebar {
         position: fixed;
         left: 0; top: 0; bottom: 0;
-        transform: translateX(-100%); /* Hidden by default on mobile */
+        transform: translateX(-100%); 
       }
-      #sidebar.open { transform: translateX(0); /* Slide in */ }
+      #sidebar.open { transform: translateX(0); }
       #overlay.show { display: block; opacity: 1; }
-      #content-scroll-area { padding: 25px 20px; }
+      #content-scroll-area { padding: 30px 20px; }
+      #progress-container { top: 57px; } /* Push below mobile topbar */
+      #back-to-top { bottom: 20px; right: 20px; }
     }
   </style>
 </head>
@@ -232,33 +387,49 @@
   <nav id="sidebar">
     <div class="sidebar-header">
       <h2 class="sidebar-title">Chapters</h2>
-      <input type="search" id="search-input" placeholder="Search chapters...">
+      <div class="search-container">
+        <!-- SVG Search Icon -->
+        <svg class="search-icon" viewBox="0 0 24 24">
+          <path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path>
+        </svg>
+        <input type="search" id="search-input" placeholder="Search topics...">
+      </div>
     </div>
     <div class="nav-buttons">
       <button class="nav-btn" data-file="kinematics.md" onclick="loadChapter('kinematics.md')">Kinematics</button>
-      <button class="nav-btn" data-file="error.md" onclick="loadChapter('error.md')">ERRORS, MEASUREMENTS & INSTRUMENTS</button>
-      <button class="nav-btn" data-file="NLM.md" onclick="loadChapter('NLM.md')">NLM</button>
+      <button class="nav-btn" data-file="error.md" onclick="loadChapter('error.md')">Errors & Measurements</button>
+      <button class="nav-btn" data-file="NLM.md" onclick="loadChapter('NLM.md')">Laws of Motion (NLM)</button>
       <button class="nav-btn" data-file="WEP.md" onclick="loadChapter('WEP.md')">Work Energy Power</button>
-      <button class="nav-btn" data-file="COM.md" onclick="loadChapter('COM.md')">COM, Momentum & Collisions</button>
+      <button class="nav-btn" data-file="COM.md" onclick="loadChapter('COM.md')">COM & Collisions</button>
       <button class="nav-btn" data-file="rotation.md" onclick="loadChapter('rotation.md')">Rigid Body Dynamics</button>
       <button class="nav-btn" data-file="gravitation.md" onclick="loadChapter('gravitation.md')">Gravitation</button>
       <button class="nav-btn" data-file="fluids-and-solids.md" onclick="loadChapter('fluids-and-solids.md')">Fluids and Solids</button>
-      <button class="nav-btn" data-file="SHM.md" onclick="loadChapter('SHM.md')">SHM</button>
+      <button class="nav-btn" data-file="SHM.md" onclick="loadChapter('SHM.md')">Simple Harmonic Motion</button>
       <button class="nav-btn" data-file="waves.md" onclick="loadChapter('waves.md')">Waves</button>
-      <button class="nav-btn" data-file="calorimetry.md" onclick="loadChapter('calorimetry.md')">Thermal Expansion & Calorimetry</button>
+      <button class="nav-btn" data-file="calorimetry.md" onclick="loadChapter('calorimetry.md')">Thermal Exp. & Calorimetry</button>
       <button class="nav-btn" data-file="heat-transfer.md" onclick="loadChapter('heat-transfer.md')">Heat Transfer</button>
       <button class="nav-btn" data-file="KTG.md" onclick="loadChapter('KTG.md')">Kinetic Theory Of Gases</button>
       <button class="nav-btn" data-file="thermodynamics.md" onclick="loadChapter('thermodynamics.md')">Thermodynamics</button>
       <button class="nav-btn" data-file="ELECTROSTATICS.md" onclick="loadChapter('ELECTROSTATICS.md')">Electrostatics</button>
-      <button class="nav-btn" data-file="complete.md" onclick="loadChapter('complete.md')">Complete</button>
+      <button class="nav-btn" data-file="complete.md" onclick="loadChapter('complete.md')">Complete Notes</button>
     </div>
   </nav>
 
   <!-- Main Area -->
   <main id="main-area">
+    
+    <!-- Progress Bar -->
+    <div id="progress-container">
+      <div id="progress-bar"></div>
+    </div>
+
     <!-- Mobile Top Bar -->
     <header id="mobile-topbar">
-      <button class="menu-toggle-btn" onclick="openSidebar()" aria-label="Open Menu">☰</button>
+      <button class="menu-toggle-btn" onclick="openSidebar()" aria-label="Open Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"></path>
+        </svg>
+      </button>
       <h1 class="mobile-page-title">Adv Physics Notes</h1>
     </header>
 
@@ -268,10 +439,22 @@
         <!-- Markdown content loads here -->
       </div>
     </div>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" onclick="scrollToTop()" aria-label="Back to Top">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
   </main>
 
   <script>
-    // --- Sidebar Controls ---
+    // --- UI Interactions ---
+    const scrollArea = document.getElementById('content-scroll-area');
+    const progressBar = document.getElementById('progress-bar');
+    const backToTopBtn = document.getElementById('back-to-top');
+    const contentContainer = document.getElementById('content');
+
     function openSidebar() {
       document.getElementById('sidebar').classList.add('open');
       document.getElementById('overlay').classList.add('show');
@@ -281,6 +464,26 @@
       document.getElementById('sidebar').classList.remove('open');
       document.getElementById('overlay').classList.remove('show');
     }
+
+    function scrollToTop() {
+      scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Update Progress Bar & Back-to-Top Button on scroll
+    scrollArea.addEventListener('scroll', () => {
+      // Progress Bar
+      const scrollTop = scrollArea.scrollTop;
+      const docHeight = scrollArea.scrollHeight - scrollArea.clientHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = scrollPercent + '%';
+
+      // Back to top button visibility
+      if (scrollTop > 400) {
+        backToTopBtn.classList.add('visible');
+      } else {
+        backToTopBtn.classList.remove('visible');
+      }
+    });
 
     // --- Search Functionality ---
     document.getElementById('search-input').addEventListener('input', (e) => {
@@ -337,23 +540,28 @@
       const parsedHtml = marked.parse(safeMarkdown);
       const finalHtml = restoreMath(parsedHtml, mathStore);
       
-      const container = document.getElementById("content");
       if (window.MathJax && typeof MathJax.typesetClear === "function") {
-        MathJax.typesetClear([container]);
+        MathJax.typesetClear([contentContainer]);
       }
       
-      container.innerHTML = finalHtml;
-      await MathJax.typesetPromise([container]);
+      contentContainer.innerHTML = finalHtml;
+      await MathJax.typesetPromise([contentContainer]);
     }
 
     function showLoader() {
-      document.getElementById("content").innerHTML = '<div class="loader"></div>';
+      // Remove animation class before loading new content
+      contentContainer.classList.remove('fade-in');
+      contentContainer.innerHTML = '<div class="loader"></div>';
     }
 
     function loadChapter(file, updateHash = true) {
       setActiveButton(file);
-      closeSidebar(); // Auto-close menu on mobile after selection
+      closeSidebar(); 
       showLoader();
+
+      // Reset scroll tracking
+      progressBar.style.width = '0%';
+      backToTopBtn.classList.remove('visible');
 
       fetch(file)
         .then(res => {
@@ -362,12 +570,27 @@
         })
         .then(async data => {
           await render(data);
+          
+          // Trigger the fade-in animation
+          void contentContainer.offsetWidth; // Trigger reflow to restart animation
+          contentContainer.classList.add('fade-in');
+
           localStorage.setItem(LAST_CHAPTER_KEY, file);
           if (updateHash) window.location.hash = fileToHash(file);
-          document.getElementById('content-scroll-area').scrollTo(0, 0); // Scroll to top
+          
+          // Scroll to top immediately upon loading
+          scrollArea.scrollTo(0, 0); 
         })
         .catch(err => {
-          document.getElementById("content").innerHTML = `<p style="color:red; margin-top:20px;">Failed to load <b>${file}</b>. Make sure the markdown file exists in the same folder.</p>`;
+          contentContainer.innerHTML = `
+            <div style="text-align:center; padding: 40px 20px;">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:16px;">
+                <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <h2 style="color: #ef4444; margin-top:0;">Failed to load chapter</h2>
+              <p>Could not find <b>${file}</b>. Make sure the markdown file exists in the same folder.</p>
+            </div>`;
+          contentContainer.classList.add('fade-in');
           console.error(err);
         });
     }
@@ -382,4 +605,4 @@
     loadChapter(initialChapter, !window.location.hash);
   </script>
 </body>
-        </html>
+</html>
